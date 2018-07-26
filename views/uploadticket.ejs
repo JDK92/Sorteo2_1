@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/materialize.min.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <form method="post" action="registrarFactura">
+            <!-- <div class="input-field">
+                <label>Estado</label>
+                <input placeholder="placeholder" type="text">
+            </div> -->
+            <!-- <div class="input-field">
+                <label>Ciudad </label>
+                <input placeholder="placeholder" type="text">
+            </div> -->
+
+            <div class="input-field">
+                <select class="browser-default" name="tiendaPicked">
+                
+                    <% for (var i = 0; i < tiendas.length; i++) { %>
+                        <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
+                            <%= tiendas[i].nombreTienda %>
+                        </option>
+
+                        <%  }%>
+                </select>
+            </div>
+            <div class="input-field">
+                <label># de cliente</label>
+                <input placeholder="placeholder" type="text" name="cliente">
+            </div>
+            <div class="input-field">
+                <label>Factura</label>
+                <input placeholder="placeholder" type="text" name="factura">
+            </div>
+            <div class="input-field">
+                <label>Importe</label>
+                <input placeholder="placeholder" type="text" name="importe">
+            </div>
+            <div class="input-field">
+                <label>Fecha de Compra</label>
+                <input placeholder="placeholder" type="date" name="fecha" id="date">
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+
+            </button>
+        </form>
+    </div>
+
+    <script src="/js/materialize.min.js"></script>
+
+</body>
+
+</html>
