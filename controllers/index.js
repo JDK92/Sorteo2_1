@@ -18,6 +18,7 @@ router.get('/', function(req, res) {
 
     })
 })
+
 router.get('/register', function(req, res) {
     res.render('register', {
 
@@ -44,18 +45,38 @@ router.get('/uploadticket', function(req, res) {
 })
 
 
+// router.post('/validarLogin', function(req, res) {
+//     kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
+//         console.log(data)
+//         if (data.status == 200) {
+//             emailUsuario = req.body.email;
+//             res.redirect('/mytickets');
+//         } else {
+//             res.render('login', {
+//                 bandera: false
+//             })
+//         }
+//     })
+// })
+
 router.post('/validarLogin', function(req, res) {
-    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
-        console.log(data)
-        if (data.status == 200) {
-            emailUsuario = req.body.email;
-            res.redirect('/mytickets');
-        } else {
-            res.render('login', {
-                bandera: false
-            })
-        }
-    })
+    var objFijo = {
+        email: "jmorales@kuroda.com",
+        password: 123
+    }
+    var obj = {
+        emailUsuario: req.body.email,
+        passwordUsuario: req.body.password
+    }
+
+    if (objFijo.email == obj.emailUsuario && objFijo.password == obj.passwordUsuario) {
+        emailUsuario = req.body.email;
+        res.redirect('/mytickets');
+    } else {
+        res.render('login', {
+            bandera: false
+        })
+    }
 })
 
 router.post('/registrarCliente', function(req, res) {
@@ -120,31 +141,42 @@ router.post('/registrarFactura', function(req, res) {
 
 
 
-router.get('/mytickets', function(req, res) {
-    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/Boletos/Email/${emailUsuario}`, function(data) {
-        console.log(data);
-        if (data.status == 200) {
-            res.render('mytickets', {
-                nombre: 'Karent ',
-                apellido: 'Matus',
-                personas: ['Mokay', 'Araoz', 'Sanchez', 'Morales'],
-                miColor: 'red',
-                miOtroColor: 'miEstiloAzul',
-                datos: data.data
-            })
-        } else {
-            res.render('mytickets', {
-                nombre: 'Karent ',
-                apellido: 'Matus',
-                personas: ['Mokay', 'Araoz', 'Sanchez', 'Morales'],
-                miColor: 'red',
-                miOtroColor: 'miEstiloAzul',
-                datos: []
-            })
-        }
-    })
-})
+// router.get('/mytickets', function(req, res) {
+//     kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/Boletos/Email/${emailUsuario}`, function(data) {
+//         console.log(data);
+//         if (data.status == 200) {
+//             res.render('mytickets', {
+//                 nombre: 'Karent ',
+//                 apellido: 'Matus',
+//                 personas: ['Mokay', 'Araoz', 'Sanchez', 'Morales'],
+//                 miColor: 'red',
+//                 miOtroColor: 'miEstiloAzul',
+//                 datos: data.data
+//             })
+//         } else {
+//             res.render('mytickets', {
+//                 nombre: 'Karent ',
+//                 apellido: 'Matus',
+//                 personas: ['Mokay', 'Araoz', 'Sanchez', 'Morales'],
+//                 miColor: 'red',
+//                 miOtroColor: 'miEstiloAzul',
+//                 datos: []
+//             })
+//         }
+//     })
+// })
 
+router.get('/mytickets', function(req, res) {
+    var objValidator = true
+    if (objValidator) {
+        console.log("VERDADERO");
+        res.render('mytickets', {
+            objValidator: true
+        });
+    } else if (objValidator == false) {
+        console.log("FALSO");
+    }
+})
 
 
 module.exports = router
