@@ -12,6 +12,11 @@
 
 <body>
     <div class="container">
+        <p class="flow-text">
+            Si ya tienes cuenta,
+            <a href="login">haz clic aquí para iniciar sesión</a>
+        </p>
+        <h3>Registro de usuario</h3>
         <form method="post" action="registrarCliente">
             <div class="input-field">
                 <label for="nombre">Nombre</label>
@@ -82,13 +87,12 @@
                 <input type="password" name="repeatPassword">
             </div>
 
-            <button class="btn-large" type="submit">ENVIAR</button>
+            <div class="center-align">
+                <button class="btn-large" type="submit">ENVIAR</button>
+            </div>
+        </form>
+        <a href=".">Regresar</a>
     </div>
-
-
-    </form>
-    </div>
-
     <script src="/js/materialize.min.js"></script>
 
 </body>

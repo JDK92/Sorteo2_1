@@ -11,22 +11,36 @@
 
 <body>
     <div class="container">
-        <form method="post" action="validarLogin">
-            <label for="user">Mi correo</label>
-            <input type="text" placeholder="Mi correo" name="email">
-            <label for="password">Contraseña</label>
-            <input type="password" placeholder="Contraseña" name="pass">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                <i class="material-icons right">send</i>
-            </button>
-        </form>
+        <h3>Inicio de sesión</h3>
+        <% if (!bandera)  { %>
+            <p class="red accent-3 flow-text white-text">Usuario y/o contraseña incorrectos. Intenta de nuevo.</p>
+            <% } %>
+                <form method="post" action="validarLogin">
+                    <div class="input-field">
+                        <label for="user">Correo</label>
+                        <input type="text" placeholder="Mi correo" name="email">
+                    </div>
+                    <div class="input-field">
+                        <label for="password">Contraseña</label>
+                        <input type="password" placeholder="Contraseña" name="pass">
+                    </div>
+                    <div class="input-field center-align">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Enviar
+                        </button>
+                    </div>
+                </form>
+                <a href=".">
+                    Regresar
+                </a>
+                <p class="flow-text">
+                    Si todavía no tienes cuenta,
+                    <a href="register">haz clic aquí para crear tu usuario</a>
+                </p>
     </div>
 
-    <% if (!bandera)  { %>
-        <h1>Usuario y/o contraseña incorrectos. Intenta de nuevo.</h1>
-        <% } %>
 
-            <script src="/js/materialize.min.js"></script>
+
+    <script src="/js/materialize.min.js"></script>
 </body>
 
 </html>

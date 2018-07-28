@@ -1,11 +1,10 @@
 var express = require('express'),
     router = express.Router()
 
-var emailUsuario;
-
 
 var kapi = require('../models/api.js')
 
+var emailUsuario;
 
 router.get('/login', function(req, res) {
     res.render('login', {
@@ -32,7 +31,7 @@ router.get('/login', function(req, res) {
 })
 
 router.get('/uploadticket', function(req, res) {
-    kapi.getData(`http://192.168.34.182:8080/60Aniversario/Tiendas/Catalogo`, function(data) {
+    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Tiendas/Catalogo`, function(data) {
         console.log(data);
         if (data.status == 200) {
             res.render('uploadticket', {
@@ -46,7 +45,7 @@ router.get('/uploadticket', function(req, res) {
 
 
 router.post('/validarLogin', function(req, res) {
-    kapi.getData(`http://192.168.34.182:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
+    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
         console.log(data)
         if (data.status == 200) {
             emailUsuario = req.body.email;
@@ -77,7 +76,7 @@ router.post('/registrarCliente', function(req, res) {
         password: req.body.password
     }
     console.log(obj);
-    kapi.postData(`http://192.168.34.182:8080/60Aniversario/Cliente`, obj, function(data) {
+    kapi.postData(`http://192.168.13.103:8080/60Aniversario/Cliente`, obj, function(data) {
         console.log(data)
         if (data.status == 200) {
             res.redirect('/mytickets');
@@ -93,11 +92,11 @@ router.post('/registrarFactura', function(req, res) {
         cliente: req.body.cliente,
         factura: req.body.factura,
         importe: req.body.importe,
-        fecha: req.body.fecha,
+        fecha: fechaDoc,
         idTienda: req.body.tiendaPicked
     }
 
-    kapi.postData(`http://192.168.34.182:8080/60Aniversario/Cliente/Boleto`, obj, function(data) {
+    kapi.postData(`http://192.168.13.103:8080/60Aniversario/Cliente/Boleto`, obj, function(data) {
         console.log(data)
         if (data.status == 200) {
             console.log('FUE 200');
@@ -110,13 +109,10 @@ router.post('/registrarFactura', function(req, res) {
             })
         } else if (data.status == 404) {
             console.log('FUE 404');
-            res.render('uploadticket', {
-                bandera: false,
-                datos: 0
-            })
+            res.redirect('/uploadticket');
         } else if (data.status == 500) {
             console.log('FUE 500');
-            res.redirect('/mytickets');
+            res.redirect('/uploadticket');
         }
     })
 })
@@ -125,7 +121,7 @@ router.post('/registrarFactura', function(req, res) {
 
 
 router.get('/mytickets', function(req, res) {
-    kapi.getData(`http://192.168.34.182:8080/60Aniversario/Cliente/Boletos/Email/${emailUsuario}`, function(data) {
+    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/Boletos/Email/${emailUsuario}`, function(data) {
         console.log(data);
         if (data.status == 200) {
             res.render('mytickets', {
