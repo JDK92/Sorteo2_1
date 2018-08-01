@@ -1,5 +1,5 @@
 var confettiSettings = {
-    target: 'my-canvas'
+    target: 'confetti-holder'
 };
 var confetti = new ConfettiGenerator(confettiSettings);
 confetti.render();

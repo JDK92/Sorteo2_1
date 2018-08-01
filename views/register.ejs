@@ -12,12 +12,19 @@
 
 <body>
     <div class="container">
-        <p class="flow-text">
+        <div class="hide">
+            <p class="flow-text red-text text-accent-4">
+                Este usuario ya se encuentra registrado.
+            </p>
+        </div>
+        <p>
             Si ya tienes cuenta,
             <a href="login">haz clic aquí para iniciar sesión</a>
         </p>
         <h3>Registro de usuario</h3>
         <form method="post" action="registrarCliente">
+
+            <h5>Datos personales</h5>
             <div class="input-field">
                 <label for="nombre">Nombre</label>
                 <input type="text" name="nomCliente">
@@ -31,21 +38,7 @@
                 <input type="text" name="apellidoMaterno">
             </div>
 
-            <div class="input-field">
-                <label for="ciudad">Ciudad</label>
-                <input type="text" name="nomCiudad">
-            </div>
-
-            <div class="input-field">
-                <label for="estado">Estado</label>
-                <input type="text" name="nomEstado">
-            </div>
-
-            <div class="input-field">
-                <label for="codigoPostal">Código Postal</label>
-                <input type="text" name="codigoPostal">
-            </div>
-
+            <h5>Domicilio</h5>
             <div class="input-field">
                 <label for="nomCalle">Calle</label>
                 <input type="text" name="nomCalle">
@@ -66,6 +59,22 @@
                 <input type="text" name="nomColonia">
             </div>
 
+            <div class="input-field">
+                <label for="codigoPostal">Código Postal</label>
+                <input type="text" name="codigoPostal">
+            </div>
+
+            <div class="input-field">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" name="nomCiudad">
+            </div>
+
+            <div class="input-field">
+                <label for="estado">Estado</label>
+                <input type="text" name="nomEstado">
+            </div>
+
+            <h5>Contacto</h5>
             <div class="input-field">
                 <label for="numTelefono">Teléfono casa</label>
                 <input type="text" name="numTelefono">
@@ -91,7 +100,10 @@
                 <button class="btn-large" type="submit">ENVIAR</button>
             </div>
         </form>
-        <a href=".">Regresar</a>
+        <p class="center-align">
+            <a href=".">Regresar</a>
+        </p>
+
     </div>
     <script src="/js/materialize.min.js"></script>
 

@@ -2,15 +2,13 @@
     display: block;
 }
 
-.test {
-    min-height: 100vh;
+.fullscreen {
+    min-height: 95vh;
 }
 
 .confetti {
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
-    z-index: 0;
-    min-height: 105vh;
+    z-index: -1;
 }

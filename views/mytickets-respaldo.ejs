@@ -10,8 +10,13 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
-
 <body>
+    <div class="container center-align">
+        <% if(objValidator == true) { %>
+            <h1>HOLA MUNDO</h1>
+            <% } %>
+    </div>
+
     <div class="container center-align">
 
         <% if(datos.length > 0){ %>
@@ -49,21 +54,16 @@
                 </div>
             </div>
             <% } else{ %>
-                <p class="flow-text">Todavía no tienes boletos. Haz clic en el botón para registrarlos.
-                </p>
+                <p class="flow-text">Todavía no tienes boletos. Haz clic en el botón para registrarlos.</p>
                 <a href="uploadticket" class="btn">Registrar facturas</a>
                 <% } %>
-                    <p>
-                        <a href=".">
-                            Cerrar sesión
-                        </a>
-                    </p>
+
+                    <a href=".">Cerrar sesión</a>
     </div>
 
 
 
     <script src="/js/materialize.min.js"></script>
 </body>
-
 
 </html>
