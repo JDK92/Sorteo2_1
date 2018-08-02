@@ -25,6 +25,12 @@ router.get('/register', function(req, res) {
     })
 })
 
+router.get('/validatetickets', function(req, res) {
+    res.render('validatetickets', {
+
+    })
+})
+
 
 router.get('/uploadticket', function(req, res) {
     kapi.getData(`http://192.168.13.103:8080/60Aniversario/Tiendas/Catalogo`, function(data) {
