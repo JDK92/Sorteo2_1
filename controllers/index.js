@@ -46,19 +46,43 @@ router.get('/uploadticket', function(req, res) {
 })
 
 
+// router.post('/validarLogin', function(req, res) {
+//     kapi.postData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
+//         console.log(data)
+//         if (data.status == 200) {
+//             emailUsuario = req.body.email;
+//             res.redirect('/mytickets');
+//         } else {
+//             res.render('login', {
+//                 bandera: false
+//             })
+//         }
+//     })
+// })
+
 router.post('/validarLogin', function(req, res) {
-    kapi.getData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/Email/${req.body.email}/Pass/${req.body.pass}`, function(data) {
-        console.log(data)
-        if (data.status == 200) {
-            emailUsuario = req.body.email;
-            res.redirect('/mytickets');
+    var obj = {
+        email: req.body.email,
+        pass: req.body.pass
+    };
+    kapi.postData(`http://192.168.13.103:8080/60Aniversario/Cliente/LogIn/`, obj, function(data) {
+        if (typeof data === "undefined") {
+            console.log("EL SERVICIO SE CHURIÓ");
         } else {
-            res.render('login', {
-                bandera: false
-            })
+            console.log(data);
+            if (data.status == 200) {
+                emailUsuario = req.body.email;
+                res.redirect('/mytickets');
+            } else {
+                res.render('login', {
+                    bandera: false
+                })
+            }
         }
     })
 })
+
+
 
 
 

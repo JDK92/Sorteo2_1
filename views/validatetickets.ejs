@@ -7,26 +7,97 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" media="screen" href="/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Document</title>
 </head>
 
 <body>
 
-    <nav>
+    <nav class="black white-text">
         <div class="nav-wrapper">
-            <div class="brand-logo">
-                Hola, USER
+            <div class="brand-logo left">
+                Hola USUARIO
             </div>
+            <ul class="nav-mobile right">
+                <li>
+                    <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-med-and-up">
+                        <i class="material-icons">
+                            close
+                        </i>
+                    </a>
+                    <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-small-and-down">
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
     <main class="container">
-        <h1>HOLA MUNDO</h1>
+        <table class="responsive-table">
+            <thead>
+                <tr>
+                    <th># de cliente</th>
+                    <th>Nombre</th>
+                    <th>Factura</th>
+                    <th>Importe</th>
+                    <th>Sucursal</th>
+                    <th>Fecha compra</th>
+                    <th>Confirmación</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th>01</th>
+                    <th>Usuario de prueba</th>
+                    <th>ABCD1234</th>
+                    <th>3500</th>
+                    <th>Kuroda Culiacán - Bravo</th>
+                    <th>dd/mm/aaaa</th>
+                    <th>
+                        <form action="">
+                            <select class="browser-default">
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="">Aceptar factura</option>
+                                <option value="">Rechazar factura</option>
+                            </select>
+                            <div class="input-field">
+                                <button type="submit" class="btn-small">Enviar</button>
+                            </div>
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th>01</th>
+                    <th>Usuario de prueba</th>
+                    <th>ABCD1234</th>
+                    <th>3500</th>
+                    <th>Kuroda Culiacán - Bravo</th>
+                    <th>dd/mm/aaaa</th>
+                    <th>
+                        <form action="">
+                            <select class="browser-default">
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="">Aceptar factura</option>
+                                <option value="">Rechazar factura</option>
+                            </select>
+                            <div class="input-field">
+                                <button type="submit" class="btn-small">Enviar</button>
+                            </div>
+                        </form>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+
+
     </main>
 
 
 
     <script src="/js/materialize.min.js "></script>
+    <script src="/js/script.js"></script>
 </body>
 
 </html>

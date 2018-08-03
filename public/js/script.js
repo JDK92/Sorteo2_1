@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.carousel');
+    var instances = M.Carousel.init(elems);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
@@ -38,5 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
 var confettiSettings = {
     target: 'confetti-holder'
 };
+
 var confetti = new ConfettiGenerator(confettiSettings);
 confetti.render();
