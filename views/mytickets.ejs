@@ -16,7 +16,8 @@
     <nav class="black white-text">
         <div class="nav-wrapper">
             <div class="brand-logo left">
-                Hola USUARIO
+                Hola
+                <%= nombreUsuario %>
             </div>
             <ul class="nav-mobile right">
                 <li>
@@ -43,7 +44,7 @@
             </h3>
 
             <div class="row">
-                <div class="col xl2 offset-xl5 materialize-red white-text z-depth-2">
+                <div class="col s4 offset-s4  xl2 offset-xl5 materialize-red white-text z-depth-2">
                     <h2>
                         <%= datos.length %>
                     </h2>
@@ -52,15 +53,28 @@
 
             <h3>Mis boletos</h3>
             <div class="row">
-                <% for (var i = 0; i < datos.length; i++) { %>
-                    <div class="col xl3">
-                        <h5>
-                            <strong>
-                                <%= datos[i] %>
-                            </strong>
-                        </h5>
-                    </div>
-                    <% } %>
+                <div class="col xl4 offset-xl4">
+                    <table class="responsive-table centered striped">
+                        <thead>
+                            <tr>
+                                <th>Factura</th>
+                                <th>Folio boleto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (var i = 0; i < datos.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= datos[i].factura %>
+                                    </td>
+                                    <td>
+                                        <%= datos[i].boleto %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <p>
