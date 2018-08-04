@@ -13,7 +13,7 @@
 <body>
     <nav class="black hide-on-small-and-down">
         <div class="nav-wrapper">
-            <form action="">
+            <form method="post" action="validarLogin">
                 <ul class="right">
                     <li>
                         <div class="input-field">
@@ -28,14 +28,12 @@
                             <label for="password">
                                 Contraseña
                             </label>
-                            <input type="password" name="password" placeholder="Contraseña" class="white-text">
+                            <input type="password" name="pass" placeholder="Contraseña" class="white-text">
                         </div>
                     </li>
                     <li>
                         <div class="input-field">
-                            <a href="#" class="btn waves-effect waves-red red darken-4">
-                                Entrar
-                            </a>
+                            <button type="submit" class="btn waves-effect waves-red red darken-4">Entrar</button>
                         </div>
                     </li>
                 </ul>
@@ -60,7 +58,7 @@
                         ¡Ven y participa!
                     </h4>
                     <p class="flow-text">
-                        Obtén 1 boleto por cada $1,000 de compra y entrarás al sorteo de aniversario en el que podrás ganar
+                        Obtén <strong>un</strong> boleto por cada $1,000 de compra y entrarás al sorteo de aniversario en el que podrás ganar
                         <span class="red-text text-darken-4">
                             <strong>GRANDES PREMIOS</strong>
                         </span>
