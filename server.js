@@ -3,8 +3,8 @@ var express = require('express'),
     controllers = require('./controllers'),
     session = require('express-session'),
     RedisStore = require('connect-redis')(session),
-    redis = require("redis"),
-    client  = redis.createClient(),
+    //redis = require("redis"),
+    //client  = redis.createClient(),
     expressValidator = require('express-validator');
 
 
@@ -21,12 +21,12 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/*
 var sessionRedis = session({
     store: new RedisStore({
-        host: 'localhost',
+        host: '192.168.13.209',
         port: 6379, 
-        client: client,
+        pass: 'S0l0Kur0d4#',
+        //client: client,
         ttl :  60
     }),
     name: "Redis",
@@ -35,11 +35,11 @@ var sessionRedis = session({
     saveUninitialized: false
     ,cookie: {
         httpOnly: true,
-        maxAge: 60
+		secure: false,
+		domain: "localhost"
     }
 });
 app.use(sessionRedis);
-*/
 
 app.use(expressValidator({
     errorFormatter: function(param, msg, value) {
