@@ -1,6 +1,12 @@
 var express = require('express'),
     app = express(),
-    controllers = require('./controllers')
+    controllers = require('./controllers'),
+    session = require('express-session'),
+    RedisStore = require('connect-redis')(session),
+    redis = require("redis"),
+    client  = redis.createClient(),
+    expressValidator = require('express-validator');
+
 
 var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -14,6 +20,43 @@ app.use(helmet()) //Seguridad del HTTP
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+/*
+var sessionRedis = session({
+    store: new RedisStore({
+        host: 'localhost',
+        port: 6379, 
+        client: client,
+        ttl :  60
+    }),
+    name: "Redis",
+    secret: "pruebaRedis",
+    resave: false,
+    saveUninitialized: false
+    ,cookie: {
+        httpOnly: true,
+        maxAge: 60
+    }
+});
+app.use(sessionRedis);
+*/
+
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.')
+        , root    = namespace.shift()
+        , formParam = root;
+   
+      while(namespace.length) {
+        formParam += '[' + namespace.shift() + ']';
+      }
+      return {
+        param : formParam,
+        msg   : msg,
+        value : value
+      };
+    }
+  }));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

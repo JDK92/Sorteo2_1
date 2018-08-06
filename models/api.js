@@ -11,8 +11,8 @@ var apifunctions = {
             json: true,
             url: url,
             auth: {
-                username: config.api.usr,
-                password: config.api.psw
+                username: config.api.auth.usr,
+                password: config.api.auth.psw
             }
         }
 
@@ -32,8 +32,8 @@ var apifunctions = {
             method: 'POST',
             uri: url,
             auth: {
-                username: config.api.usr,
-                password: config.api.psw
+                username: config.api.auth.usr,
+                password: config.api.auth.psw
             },
             body: objeto,
             json: true

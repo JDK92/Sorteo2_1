@@ -78,7 +78,10 @@
                                 <label>Importe</label>
                                 <input type="text" name="importe" value="<%=importe %>">
                             </div>
-                            <div class="input-field g-recaptcha" data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k">
+                            <div class="input-field g-recaptcha" 
+                                data-callback="capcha_filled"
+                                data-expired-callback="capcha_expired"
+                                data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k">
                             </div>
                             <div class="input-field center-align">
                                 <button class="btn waves-effect waves-light" type="submit" name="action">Enviar</button>
