@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Soporte</title>
+</head>
+
+<body>
+    <nav class="black white-text">
+        <div class="nav-wrapper">
+            <div class="brand-logo left">
+                Hola
+                <%=nombreUsuario%>
+            </div>
+            <ul class="nav-mobile right">
+                <li>
+                    <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-med-and-up">
+                        <i class="material-icons">
+                                    close
+                                </i>
+                    </a>
+                    <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-small-and-down">
+                                Cerrar sesión
+                            </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <form method="post" action="encontrarCliente">
+            <p class="flow-text">Ingresa el correo del cliente del cual quieres encontrar información:</p>
+            <div class="row">
+
+                <div class="input-field col xl6">
+                    <input type="email" name="mail" class="validate" placeholder="Ingresa correo electrónico" onkeyup="validaDatos()">
+                    <label for="mail">Correo electrónico</label>
+                </div>
+
+                <div class="input-field col xl3 center-align">
+                    <button type="submit" class="btn waves-effect waves-green green darken-2" id="submit" disabled>
+                            Buscar <i class="material-icons right">search</i>
+                        </button>
+                </div>
+            </div>
+        </form>
+
+        <% if (error == 404) { %>
+            <h3 class="red-text text-darken-3">
+                No se encontró información.
+            </h3>
+            <% } else if (error == 500) {%>
+                <h3 class="red-text text-darken-3">
+                    Ocurrió un error. Intenta de nuevo.
+                </h3>
+                <% }%>
+
+                    <% if (success) {%>
+                        <table class="responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Ubicación</th>
+                                    <th>Código Postal</th>
+                                    <th>Celular</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                  <input type="checkbox">
+                                                  <span class="lever"></span>
+                                            </label>
+                                            <%= cliente.nomCliente + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                            <input type="checkbox">
+                                            <span class="lever"></span>
+                                            </label>
+                                            <%= cliente.nomCiudad + ', ' + cliente.nomEstado %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                            <%= cliente.codigoPostal %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                <input type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                            <%= cliente.numCelular %>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p class="flow-text">
+                            Contraseña: <span> <%= cliente.password %> </span>
+                        </p>
+
+                        <p>
+                            <a href="soporte">
+                                <i class="material-icons left">chevron_left</i> Regresar
+                            </a>
+                        </p>
+                        <% }%>
+    </main>
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
