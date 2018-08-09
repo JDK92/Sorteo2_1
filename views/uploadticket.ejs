@@ -14,7 +14,8 @@
     <nav class="black white-text">
         <div class="nav-wrapper">
             <div class="brand-logo left">
-                Hola USUARIO
+                Hola
+                <%=nombreUsuario%>
             </div>
             <ul class="nav-mobile right">
                 <li>
@@ -31,68 +32,80 @@
         </div>
     </nav>
 
-    <div class="container">
-        <% if (error == 400) { %>
-            <p class="flow-text red-text text-darken-4">
-                Esta factura ya fue utilizada
-            </p>
-            <% } else if (error == 404) { %>
-                <p class="flow-text red-text text-darken-4">
-                    No se encontró factura. Revisa la información e intenta de nuevo.
-                </p>
-                <% } else if (error == 500) { %>
-                    <p class="flow-text red-text text-darken-4">
-                        Error interno del servidor. Vuelve a intentar.
-                    </p>
-                    <% } %>
-                        <form method="post" action="registrarFactura">
-                            <label for="tiendaPicked">
-                                Selecciona una sucursal
-                            </label>
-                            <select name="tiendaPicked" value="<%= nombreTienda %>">
-                                <option value="" disabled selected>
-                                    Selecciona una sucursal
-                                </option>
-                                <% for (var i = 0; i < tiendas.length; i++) { %>
-                                    <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
-                                        <%= tiendas[i].nombreTienda %>
-                                    </option>
-                                    <%  }%>
-                            </select>
-                            <div class="input-field">
-                                <label>Factura</label>
-                                <input type="text" name="factura" value="<%=factura %>">
-                            </div>
+    <main class="container">
+        <h1 class="red-text text-darken-4">Registro de factura</h1>
+        <% if (!servicio) {%>
+            <h4 class="red-text text-darken-4">
+                Ocurrió un error. Intenta más tarde.
+            </h4>
+            <% }%>
+                <% if(errors){ %>
+                    <ul>
+                        <% errors.forEach(function( err){ %>
+                            <li>
+                                <%= err.msg %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <%}%>
 
-                            <div class="input-field">
-                                <label># de cliente</label>
-                                <input type="text" name="cliente" value="<%=cliente %>">
-                            </div>
-
-                            <div class="input-field">
-                                <label>Fecha de Compra</label>
-                                <input type="text" name="fecha" class="datepicker" value="<%=fecha %>">
-                            </div>
-
-                            <div class="input-field">
-                                <label>Importe</label>
-                                <input type="text" name="importe" value="<%=importe %>">
-                            </div>
-                            <div class="input-field g-recaptcha" 
-                                data-callback="capcha_filled"
-                                data-expired-callback="capcha_expired"
-                                data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k">
-                            </div>
-                            <div class="input-field center-align">
-                                <button class="btn waves-effect waves-light" type="submit" name="action">Enviar</button>
-                            </div>
-                        </form>
-                        <a href="mytickets">
-                            Regresar
-                        </a>
-    </div>
+                        <% if (error == 400) { %>
+                            <p class="flow-text red-text text-darken-4">
+                                Esta factura ya fue utilizada
+                            </p>
+                            <% } else if (error == 404) { %>
+                                <p class="flow-text red-text text-darken-4">
+                                    No se encontró factura. Revisa la información e intenta de nuevo.
+                                </p>
+                                <% } else if (error == 500) { %>
+                                    <p class="flow-text red-text text-darken-4">
+                                        Error interno del servidor. Vuelve a intentar.
+                                    </p>
+                                    <% } %>
+                                        <form method="post" action="registrarFactura">
+                                            <div class="row">
+                                                <div class="input-field col s12 m6 l4">
+                                                    <!-- <label for="tiendaPicked">
+                                                                Selecciona una sucursal
+                                                    </label> -->
+                                                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default">
+                                                        <option value="" disabled selected>Selecciona una sucursal</option>
+                                                        <% for (var i = 0; i < tiendas.length; i++) { %>
+                                                            <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
+                                                                <%= tiendas[i].nombreTienda %>
+                                                            </option>
+                                                            <%  }%>
+                                                    </select>
+                                                </div>
+                                                <div class="input-field col s12 m6 l4">
+                                                    <label>Factura</label>
+                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10">
+                                                </div>
+                                                <div class="input-field col s12 m6 l4">
+                                                    <label># de cliente</label>
+                                                    <input type="text" name="cliente" value="<%=cliente %>">
+                                                </div>
+                                                <div class="input-field col s12 m6 l4">
+                                                    <label>Fecha de Compra</label>
+                                                    <input type="text" name="fecha" class="datepicker" value="<%=fecha %>">
+                                                </div>
+                                                <div class="input-field col s12 m6 l4">
+                                                    <label>Importe</label>
+                                                    <input type="text" name="importe" value="<%=importe %>">
+                                                </div>
+                                                <div class="input-field col s12 m6 l4 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k"></div>
+                                            </div>
+                                            <div class="input-field center-align">
+                                                <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit" disabled>Enviar</button>
+                                            </div>
+                                        </form>
+                                        <a href="mytickets">
+                                            Regresar
+                                        </a>
+    </main>
 
     <script src="/js/materialize.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/script.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>

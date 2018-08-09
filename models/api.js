@@ -20,7 +20,7 @@ var apifunctions = {
             if (err) {
                 console.log(err)
             }
-            //console.log(body)
+            console.log(body)
             callback(body)
         })
 
@@ -43,7 +43,7 @@ var apifunctions = {
             if (err) {
                 console.log(err)
             }
-            //console.log(body)
+            console.log(body)
             callback(body)
         })
 

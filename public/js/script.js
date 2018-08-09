@@ -1,14 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.carousel');
     var instances = M.Carousel.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
         format: 'dd/mm/yyyy',
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
 });
@@ -46,3 +46,21 @@ var confettiSettings = {
 
 var confetti = new ConfettiGenerator(confettiSettings);
 confetti.render();
+
+(function () {
+    $('input').keyup(function () {
+
+        var empty = false;
+        $('input').each(function () {
+            if ($(this).val() == '') {
+                empty = true;
+            }
+        });
+
+        if (empty) {
+            $('#submit').attr('disabled', 'disabled');
+        } else {
+            $('#submit').removeAttr('disabled');
+        }
+    });
+})()

@@ -16,7 +16,8 @@
     <nav class="black white-text">
         <div class="nav-wrapper">
             <div class="brand-logo left">
-                Hola USUARIO
+                    Hola
+                    <%=nombreUsuario%>
             </div>
             <ul class="nav-mobile right">
                 <li>
@@ -56,35 +57,36 @@
                     <tbody>
                         <% for (var i = 0; i < tickets.length; i++ ) { %>
                             <tr>
-                                <td>
-                                    <%= tickets[i].sucursal %>
-                                </td>
-                                <td>
-                                    <%= tickets[i].nombre %>
-                                </td>
-                                <td>
-                                    <%= tickets[i].email %>
-                                </td>
-                                <td>
-                                    <%= tickets[i].fecha %>
-                                </td>
-                                <td>
-                                    <%= tickets[i].factura %>
-                                </td>
-                                <td>
-                                    <%= tickets[i].importe %>
-                                </td>
-                                <form action="">
+                                <form method="post" action="validarFactura">
                                     <td>
-                                        <select class="browser-default">
+                                        <%= tickets[i].sucursal %>
+                                    </td>
+                                    <td>
+                                        <%= tickets[i].nombre %>
+                                    </td>
+                                    <td>
+                                        <%= tickets[i].email %>
+                                    </td>
+                                    <td>
+                                        <%= tickets[i].fecha %>
+                                    </td>
+                                    <td>
+                                        <%= tickets[i].factura %>
+                                    </td>
+                                    <td>
+                                        <%= tickets[i].importe %>
+                                    </td>
+
+                                    <td>
+                                        <select class="browser-default formInput" >
                                             <option value="" disabled selected>Selecciona</option>
-                                            <option value="">Aceptar factura</option>
-                                            <option value="">Rechazar factura</option>
+                                            <option value="0">Aceptar factura</option>
+                                            <option value="2">Rechazar factura</option>
                                         </select>
                                     </td>
                                     <td>
                                         <div class="input-field">
-                                            <button type="submit" class="btn-small">Enviar</button>
+                                            <button type="submit" class="btn-small green darken-2" id="submit" disabled>Enviar</button>
                                         </div>
                                     </td>
                                 </form>
@@ -101,6 +103,7 @@
 
 
     <script src="/js/materialize.min.js "></script>
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/script.js"></script>
 </body>
 

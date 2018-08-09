@@ -9,12 +9,8 @@ var emailUsuario;
 var tiendas;
 
 
-router.get('/login', function (req, res) {
-    res.render('login', {
-        bandera: true
-    })
-})
 
+/* INICIO DE SESIÓN DEL CLIENTE Y CERRAR SESIÓN */
 
 router.get('/', function (req, res) {
     res.render('index', {
@@ -23,74 +19,15 @@ router.get('/', function (req, res) {
     })
 })
 
-router.get('/register', function (req, res) {
-    res.render('register', {
-
+router.get('/login', function (req, res) {
+    res.render('login', {
+        sLogin: ''
     })
 })
 
-router.get('/validatetickets', function (req, res) {
-    if (typeof req.session.userId === "undefined") {
-        res.redirect('/.');
-    }
-    else {
-        kapi.getData(`${urlPath}/Cliente/Boleto/Auth`, function (data) {
-            if (typeof data === "undefined") {
-                res.render('.', {
-                    servicio: false
-                })
-            } else {
-                if (data.status == 404) {
-                    res.render('validatetickets', {
-                        tickets: []
-                    })
-                } else if (data.status == 200) {
-                    res.render('validatetickets', {
-                        tickets: data.data
-                    })
-                } else if (data.status == 500) {
-                    res.redirect('/.')
-                }
-            }
-        })
-    }
-})
-
-
-
-router.get('/uploadticket', function (req, res) {
-    if (typeof req.session.userId === "undefined") {
-        res.redirect('/.');
-    } else {
-        kapi.getData(`${urlPath}/Tiendas/Catalogo`, function (data) {
-            if (typeof data === "undefined") {
-                console.log("EL SERVICIO SE CHURIÓ");
-                res.render('.', {
-                    servicio: false
-                })
-            } else {
-                if (data.status == 200) {
-                    tiendas = data.data;
-                    res.render('uploadticket', {
-                        error: 0,
-                        tiendas,
-                        factura: '',
-                        cliente: '',
-                        fecha: '',
-                        importe: '',
-                        nombreTienda: ''
-                    });
-                } else if (data.status == 404) {
-                    res.redirect('/mytickets');
-                }
-            }
-        })
-    }
-})
-
 router.post('/validarLogin', function (req, res) {
-    req.check('email', 'Es necesario capturar correo').notEmpty();
-    req.check('pass', 'Es necesario capturar contraseña').notEmpty();
+    req.check('email', 'Debes ingresar tu correo para ingresar').notEmpty();
+    req.check('pass', 'Debes ingresar tu contraseña para ingresar').notEmpty();
     var errors = req.validationErrors();
     if (errors) {
         res.render('.', {
@@ -102,6 +39,7 @@ router.post('/validarLogin', function (req, res) {
             email: req.body.email,
             pass: req.body.pass
         };
+        var sLogin;
         kapi.postData(`${urlPath}/Cliente/LogIn/`, obj, function (data) {
             if (typeof data === "undefined") {
                 res.render('.', {
@@ -111,6 +49,7 @@ router.post('/validarLogin', function (req, res) {
             } else {
                 if (data.status == 200) {
                     req.session.userId = obj.email;
+                    req.session.permiso = data.data;
                 }
                 if (data.status == 200 && data.data == 1) {
                     res.redirect('/mytickets');
@@ -118,155 +57,12 @@ router.post('/validarLogin', function (req, res) {
                     res.redirect('/validatetickets')
                 } else {
                     res.render('login', {
-                        bandera: false
+                        sLogin: data.status
                     })
                 }
             }
         })
     }
-
-
-})
-
-router.post('/registrarCliente', function (req, res) {
-    var obj = {
-        nomCliente: req.body.nomCliente,
-        apellidoPaterno: req.body.apellidoPaterno,
-        apellidoMaterno: req.body.apellidoMaterno,
-        nomCalle: req.body.nomCalle,
-        numExterior: req.body.numExterior,
-        numInterior: req.body.numInterior,
-        nomColonia: req.body.nomColonia,
-        codigoPostal: req.body.codigoPostal,
-        nomCiudad: req.body.nomCiudad,
-        nomEstado: req.body.nomEstado,
-        numTelefono: req.body.numTelefono,
-        numCelular: req.body.numCelular,
-        email: req.body.email,
-        password: req.body.password
-    }
-    kapi.postData(`${urlPath}/Cliente`, obj, function (data) {
-        if (typeof data === "undefined") {
-            res.render('.', {
-                servicio: false
-            })
-        } else {
-            if (data.status == 200) {
-                res.redirect('/mytickets');
-            } else if (data.status == 400) {
-                res.redirect('/register');
-            }
-        }
-    })
-
-})
-
-router.post('/registrarFactura', function (req, res) {
-    if (typeof req.session.userId === "undefined") {
-        res.redirect('/.');
-    } else {
-        var captcha = req.body['g-recaptcha-response'];
-        if (captcha === undefined ||
-            captcha === '' ||
-            captcha === null) {
-            console.log("SIN PATH W");
-        }
-        const secretKey = '6LeRx2cUAAAAAGxIqF6lKk6IQMLWAmZcFc4StIXh';
-        const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&
-            remoteip=${req.connection.remoteAddress}`;
-        request(verifyUrl, (err, response, body) => {
-            body = JSON.parse(body);
-            if (body.success !== undefined && !body.success) {
-                //console.log("TRONO CAPTCHA WWW");
-            } else {
-                var obj = {
-                    email: emailUsuario,
-                    cliente: req.body.cliente,
-                    factura: req.body.factura,
-                    importe: req.body.importe,
-                    fecha: req.body.fecha.split('/').reverse().join(''),
-                    idTienda: req.body.tiendaPicked,
-                }
-                kapi.postData(`${urlPath}/Cliente/Boleto`, obj, function (data) {
-                    if (typeof data === "undefined") {
-                        res.render('.', {
-                            servicio: false
-                        })
-                    } else {
-                        if (data.status == 200) {
-                            res.redirect('/mytickets');
-                        } else if (data.status == 400) {
-                            res.render('uploadticket', {
-                                error: 400,
-                                obj: {},
-                                tiendas
-                            })
-                        } else if (data.status == 404) {
-                            res.render('uploadticket', {
-                                error: 404,
-                                factura: obj.factura,
-                                cliente: obj.cliente,
-                                importe: obj.importe,
-                                fecha: obj.fecha,
-                                nombreTienda: obj.idTienda,
-                                tiendas
-                            });
-                        } else if (data.status == 500) {
-                            res.redirect('/uploadticket', {
-                                error: 500,
-                                factura: obj.factura,
-                                cliente: obj.cliente,
-                                importe: obj.importe,
-                                fecha: obj.fecha,
-                                nombreTienda: obj.idTienda,
-                                tiendas
-                            });
-                        }
-                    }
-                })
-            }
-        })
-    }
-})
-
-router.get('/mytickets', function (req, res) {
-    if (typeof req.session.userId === "undefined") {
-        res.redirect('/.');
-    }
-    else {
-        kapi.getData(`${urlPath}/Cliente/Nombre/${emailUsuario}`, function (nombreUsuario) {
-            if (typeof nombreUsuario === "undefined") {
-                res.render('.', {
-                    servicio: false
-                })
-            }
-            else {
-                if (nombreUsuario.status == 200) {
-                    kapi.getData(`${urlPath}/Cliente/Boletos/Email/${emailUsuario}`, function (data) {
-                        if (typeof data === "undefined") {
-                            res.render('.', {
-                                servicio: false
-                            })
-                        }
-                        else {
-                            if (data.status == 200) {
-                                res.render('mytickets', {
-                                    datos: data.data,
-                                    nombreUsuario: nombreUsuario.data //req.session.nombreCliente
-                                })
-                            } else {
-                                res.render('mytickets', {
-                                    datos: [],
-                                    nombreUsuario: nombreUsuario.data//req.session.nombreCliente
-                                })
-                            }
-                        }
-                    })
-                }
-            }
-        })
-    }
-
 })
 
 router.get('/cerrarSesion', function (req, res) {
@@ -278,5 +74,309 @@ router.get('/cerrarSesion', function (req, res) {
         }
     });
 })
+
+/* ADMIN PARA VALIDAR FACTURAS FUERAS DE SAP */
+router.get('/validatetickets', function (req, res) {
+    if (typeof req.session.userId === "undefined") {
+        res.redirect('/.');
+    } else {
+        if (req.session.permiso == 0) {
+            kapi.getData(`${urlPath}/Cliente/Boleto/Auth`, function (data) {
+                if (typeof data === "undefined") {
+                    res.render('.', {
+                        servicio: false
+                    })
+                } else {
+                    if (data.status == 404) {
+                        res.render('validatetickets', {
+                            tickets: [],
+                            nombreUsuario: req.session.nombreUsuario
+                        })
+                    } else if (data.status == 200) {
+                        res.render('validatetickets', {
+                            tickets: data.data,
+                            nombreUsuario: req.session.nombreUsuario
+                        })
+                    } else if (data.status == 500) {
+                        res.redirect('/.')
+                    }
+                }
+            })
+        } else {
+            res.redirect("/cerrarSesion");
+        }
+
+    }
+})
+
+// router.post('/validarFactura', function(req, res) {
+//     if (typeof req.session.userId === "undefined") {
+//         res.redirect('/.');
+//     } else {
+//         var obj = {
+//             email: req.body.email,
+//             factura: req.body.factura,
+//             idTienda: req.body.idTienda,
+//             importeAutorizado: req.body.importeAutorizado,
+//             boletosAutorizados: req.body.boletosAutorizados,
+//             usuarioAutorizado: req.body.usuarioAutorizado,
+//             opcion: ''
+//         };
+//         kapi.putData(`${urlPath}/Cliente/LogIn/`, obj, function(data) {
+//             if (opcion == 0) {
+
+//             } else if (opcion == 2) {
+
+//             }
+//         })
+//     }
+// })
+
+
+/* REGISTRO DE NUEVOS USUARIOS*/
+router.get('/register', function (req, res) {
+    res.render('register', {
+        servicio: true,
+        errors: null
+    })
+})
+
+router.post('/registrarCliente', function (req, res) {
+    req.check('nombre', 'El nombre debe de incluir sólo texto').matches(/^([^0-9]*)$/);
+
+    req.check('apellidoPaterno', 'El apellido paterno debe de incluir sólo texto').matches(/^([^0-9]*)$/);
+
+    req.check('apellidoMaterno', 'El apellido materno debe de incluir sólo texto').matches(/^([^0-9]*)$/);
+
+    req.check('nomCiudad', 'La ciudad debe de incluir sólo texto').matches(/^([^0-9]*)$/);
+
+    req.check('nomEstado', 'El estado debe de incluir sólo texto').matches(/^([^0-9]*)$/);
+
+    req.check('codigoPostal', 'El código postal debe incluir sólo números').matches(/^\d{1,6}$/);
+
+    req.check('numTelefono', 'El teléfono debe incluir sólo números').matches(/^\d{1,10}$/);
+
+    req.check('numCelular', 'El celular debe incluir sólo números').matches(/^\d{1,10}$/);
+
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.render('register', {
+            servicio: true,
+            errors: errors
+        });
+    } else {
+        var obj = {
+            nomCliente: req.body.nomCliente,
+            apellidoPaterno: req.body.apellidoPaterno,
+            apellidoMaterno: req.body.apellidoMaterno,
+            nomCalle: req.body.nomCalle,
+            numExterior: req.body.numExterior,
+            numInterior: req.body.numInterior,
+            nomColonia: req.body.nomColonia,
+            codigoPostal: req.body.codigoPostal,
+            nomCiudad: req.body.nomCiudad,
+            nomEstado: req.body.nomEstado,
+            numTelefono: req.body.numTelefono,
+            numCelular: req.body.numCelular,
+            email: req.body.email,
+            password: req.body.password
+        }
+        kapi.postData(`${urlPath}/Cliente`, obj, function (data) {
+            if (typeof data === "undefined") {
+                res.render('.', {
+                    servicio: false
+                })
+            } else {
+                if (data.status == 200) {
+                    res.redirect('/mytickets');
+                } else if (data.status == 400) {
+                    res.render('login', {
+                        usuarioRegistrado: true
+                    });
+                }
+            }
+        })
+    }
+})
+
+/* FACTURA Y REGISTRO DE FACTURAS DEL CLIENTE */
+
+router.get('/mytickets', function (req, res) {
+    if (typeof req.session.userId === "undefined") {
+        res.redirect('/.');
+    } else {
+        if (req.session.permiso == 1) {
+            kapi.getData(`${urlPath}/Cliente/Nombre/${req.session.userId}`, function (nombreUsuario) {
+                if (typeof nombreUsuario === "undefined") {
+                    res.render('.', {
+                        servicio: false
+                    })
+                } else {
+                    if (nombreUsuario.status == 200) {
+                        req.session.nombreUsuario = nombreUsuario.data;
+                        kapi.getData(`${urlPath}/Cliente/Boletos/Email/${req.session.userId}`, function (data) {
+                            if (typeof data === "undefined") {
+                                res.render('.', {
+                                    servicio: false
+                                })
+                            } else {
+                                if (data.status == 200) {
+                                    res.render('mytickets', {
+                                        datos: data.data,
+
+                                        nombreUsuario: req.session.nombreUsuario
+                                    })
+                                } else {
+                                    res.render('mytickets', {
+                                        datos: [],
+                                        nombreUsuario: req.session.nombreUsuario
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        } else {
+            res.redirect("/cerrarSesion");
+        }
+    }
+})
+
+router.get('/uploadticket', function (req, res) {
+    if (typeof req.session.userId === "undefined") {
+        res.redirect('/.');
+    } else {
+        kapi.getData(`${urlPath}/Tiendas/Catalogo`, function (data) {
+            if (typeof data === "undefined") {
+                console.log("EL SERVICIO SE CHURIÓ");
+                res.render('.', {
+                    servicio: false,
+                    errors: null
+                })
+            } else {
+                if (data.status == 200) {
+                    tiendas = data.data;
+                    res.render('uploadticket', {
+                        error: 0,
+                        errors: '',
+                        tiendas: tiendas,
+                        factura: '',
+                        cliente: '',
+                        fecha: '',
+                        importe: '',
+                        nombreTienda: '',
+                        servicio: true,
+                        nombreUsuario: req.session.nombreUsuario
+                    });
+                } else if (data.status == 404) {
+                    res.redirect('/mytickets');
+                }
+            }
+        })
+    }
+})
+
+router.post('/registrarFactura', function (req, res) {
+
+    req.check('factura', 'Debes ingresar sólo números en factura').matches(/^\d{1,45}$/);
+    req.check('cliente', 'Debes ingresar sólo números # de cliente').matches(/^\d{1,45}$/);
+    req.check('importe', 'Debes ingresar sólo números en importe').matches(/^[0-9]+(\.[0-9]{1,2})?$/);
+    var errors = req.validationErrors();
+    if (errors) {
+        res.render('uploadticket', {
+            error: 0,
+            errors: errors,
+            tiendas: tiendas,
+            factura: '',
+            cliente: '',
+            fecha: '',
+            importe: '',
+            nombreTienda: '',
+            servicio: true,
+            nombreUsuario: req.session.nombreUsuario
+        });
+    } else {
+        if (typeof req.session.userId === "undefined") {
+            res.redirect('/.');
+        } else {
+            var captcha = req.body['g-recaptcha-response'];
+            if (captcha === undefined ||
+                captcha === '' ||
+                captcha === null) {
+                console.log("SIN PATH W");
+            }
+            const secretKey = '6LeRx2cUAAAAAGxIqF6lKk6IQMLWAmZcFc4StIXh';
+            const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&
+            remoteip=${req.connection.remoteAddress}`;
+            request(verifyUrl, (err, response, body) => {
+                body = JSON.parse(body);
+                if (body.success !== undefined && !body.success) {
+                    //console.log("TRONO CAPTCHA WWW");
+                } else {
+                    var obj = {
+                        email: emailUsuario,
+                        cliente: req.body.cliente,
+                        factura: req.body.factura,
+                        importe: req.body.importe,
+                        fecha: req.body.fecha.split('/').reverse().join(''),
+                        idTienda: req.body.tiendaPicked,
+                    }
+                    kapi.postData(`${urlPath}/Cliente/Boleto`, obj, function (data) {
+                        if (typeof data === "undefined") {
+                            res.render('.', {
+                                servicio: false
+                            })
+                        } else {
+                            if (data.status == 200) {
+                                res.redirect('/mytickets');
+                            } else if (data.status == 400) {
+                                console.log("Error 400");
+                                res.render('uploadticket', {
+                                    error: 400,
+                                    obj: {},
+                                    servicio: true,
+                                    errors: '',
+                                    nombreUsuario: req.session.nombreUsuario,
+                                    tiendas: tiendas
+                                })
+                            } else if (data.status == 404) {
+                                console.log("Error 404");
+                                res.render('uploadticket', {
+                                    error: 404,
+                                    factura: obj.factura,
+                                    cliente: obj.cliente,
+                                    importe: obj.importe,
+                                    fecha: obj.fecha,
+                                    nombreTienda: obj.idTienda,
+                                    servicio: true,
+                                    errors: '',
+                                    nombreUsuario: req.session.nombreUsuario,
+                                    tiendas: tiendas
+                                });
+                            } else if (data.status == 500) {
+                                console.log("Error 500");
+                                res.redirect('/uploadticket', {
+                                    error: 500,
+                                    factura: obj.factura,
+                                    cliente: obj.cliente,
+                                    importe: obj.importe,
+                                    fecha: obj.fecha,
+                                    nombreTienda: obj.idTienda,
+                                    servicio: true,
+                                    errors: '',
+                                    nombreUsuario: req.session.nombreUsuario,
+                                    tiendas: tiendas
+                                });
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    }
+})
+
 
 module.exports = router

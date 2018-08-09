@@ -22,9 +22,15 @@
                     Si todavía no tienes cuenta,
                     <a href="register">haz clic aquí para crear tu usuario</a>
                 </p>
-                <% if (!bandera)  { %>
-                    <p class="red-text text-accent-4 flow-text white-text">Usuario y/o contraseña incorrectos. Intenta de nuevo.</p>
+
+                <% if (sLogin == 400) {%>
+                    <h5 class="red-text text-darken-3"> Usuario y/o contraseña incorrectos. Intenta de nuevo.</h5>
                     <% } %>
+
+                        <% if (sLogin == 404) {%>
+                            <h5 class="red-text text-darken-3">Este usuario no existe. Favor de registrarse.</h5>
+                            <% } %>
+
             </div>
             <div class="col s12 m8 offset-m2 l6 offset-l3 xl6 offset-xl3 white">
                 <form method="post" action="validarLogin">
@@ -37,7 +43,7 @@
                         <input type="password" name="pass" placeholder="Mi contraseña">
                     </div>
                     <div class="input-field left-align">
-                        <button class="btn waves-effect waves-green green darken-2" type="submit" name="action">Ingresar
+                        <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit" disabled>Ingresar
                         </button>
                         <p class="grey-text text-darken-4">
                             Si no recuerdas tu correo o contraseña, comunícate al
@@ -58,8 +64,10 @@
     <canvas id="confetti-holder" class="confetti"></canvas>
 
     <script src="/js/materialize.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script src="/js/index.min.js"></script>
-    <script src="/js/confetti.js"></script>
+    <script src="/js/script.js"></script>
+
 </body>
 
 </html>
