@@ -1,13 +1,13 @@
-{ 
-	"api": {
-		"auth": {
-			"usr" : "KurodaApi",
- 			"psw" : "Ap1$FctPDFXml"
-		},
-		"dir": {
-			"url": "192.168.13.103",
-			"port": "8080",
-			"path": "60Aniversario"
-		}
-	}
+{
+    "api": {
+        "auth": {
+            "usr": "KurodaApi",
+            "psw": "Ap1$FctPDFXml"
+        },
+        "dir": {
+            "url": "192.168.34.141",
+            "port": "8080",
+            "path": "60Aniversario"
+        }
+    }
 }

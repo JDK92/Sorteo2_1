@@ -1,14 +1,14 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.carousel');
     var instances = M.Carousel.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
         format: 'dd/mm/yyyy',
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
 });
@@ -44,23 +44,26 @@ var confettiSettings = {
     target: 'confetti-holder'
 };
 
-var confetti = new ConfettiGenerator(confettiSettings);
-confetti.render();
+var isValid = true;
 
-(function () {
-    $('input').keyup(function () {
+function validaDatos() {
 
-        var empty = false;
-        $('input').each(function () {
-            if ($(this).val() == '') {
-                empty = true;
-            }
-        });
-
-        if (empty) {
-            $('#submit').attr('disabled', 'disabled');
-        } else {
-            $('#submit').removeAttr('disabled');
-        }
+    isValid = true;
+    $('input').each(function() {
+        if ($(this).val() === '')
+            isValid = false;
     });
-})()
+    habilitarSubmit();
+};
+
+function habilitarSubmit() {
+    if (!isValid) {
+        $('#submit').attr('disabled', 'disabled');
+    } else if (isValid) {
+        $('#submit').removeAttr('disabled');
+    }
+}
+
+function displayPassword() {
+
+}
