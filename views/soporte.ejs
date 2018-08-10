@@ -37,12 +37,12 @@
             <p class="flow-text">Ingresa el correo del cliente del cual quieres encontrar información:</p>
             <div class="row">
 
-                <div class="input-field col xl6">
+                <div class="input-field col s8 m6 ">
                     <input type="email" name="mail" class="validate" placeholder="Ingresa correo electrónico" onkeyup="validaDatos()">
                     <label for="mail">Correo electrónico</label>
                 </div>
 
-                <div class="input-field col xl3 center-align">
+                <div class="input-field col s4 m6 center-align">
                     <button type="submit" class="btn waves-effect waves-green green darken-2" id="submit" disabled>
                             Buscar <i class="material-icons right">search</i>
                         </button>
@@ -73,47 +73,47 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div class="switch">
-                                            <label>
-                                                  <input type="checkbox">
-                                                  <span class="lever"></span>
-                                            </label>
-                                            <%= cliente.nomCliente + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno %>
-                                        </div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" />
+                                                <span>
+                                                    <%= cliente.nomCliente + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno %>
+                                                </span>
+                                         </label>
                                     </td>
                                     <td>
-                                        <div class="switch">
-                                            <label>
-                                            <input type="checkbox">
-                                            <span class="lever"></span>
-                                            </label>
-                                            <%= cliente.nomCiudad + ', ' + cliente.nomEstado %>
-                                        </div>
+                                        <label>
+                                                <input type="checkbox" class="filled-in" />
+                                                    <span>
+                                                        <%= cliente.nomCiudad + ', ' + cliente.nomEstado %>
+                                                    </span>
+                                             </label>
                                     </td>
                                     <td>
-                                        <div class="switch">
-                                            <label>
-                                                <input type="checkbox">
-                                                <span class="lever"></span>
-                                            </label>
-                                            <%= cliente.codigoPostal %>
-                                        </div>
+                                        <label>
+                                                <input type="checkbox" class="filled-in" />
+                                                    <span>
+                                                        <%= cliente.codigoPostal %>
+                                                    </span>
+                                             </label>
                                     </td>
                                     <td>
-                                        <div class="switch">
-                                            <label>
-                                                <input type="checkbox">
-                                                <span class="lever"></span>
-                                            </label>
-                                            <%= cliente.numCelular %>
-                                        </div>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" />
+                                            <span>
+                                                    <%= cliente.numCelular %>
+                                            </span>
+                                        </label>
                                     </td>
+
                                 </tr>
                             </tbody>
                         </table>
 
                         <p class="flow-text">
-                            Contraseña: <span> <%= cliente.password %> </span>
+                            Contraseña:
+                            <span id="displayPassword" style="display:none">
+                                <%= cliente.password %> 
+                            </span>
                         </p>
 
                         <p>

@@ -41,6 +41,7 @@ router.get('/soporte', function(req, res) {
 router.post('/encontrarCliente', function(req, res) {
     kapi.getData(`${urlPath}/Cliente/Email/${req.body.mail}`, function(data) {
         if (typeof data === "undefined") {
+            req.session.destroy();
             res.render('.', {
                 servicio: false
             })
@@ -59,12 +60,7 @@ router.post('/encontrarCliente', function(req, res) {
 
             })
         } else if (data.status = 500) {
-            res.render('soporte', {
-                error: 500,
-                success: '',
-                nombreUsuario: req.session.nombreUsuario
-
-            })
+            res.redirect("/.");
         }
     })
 })
@@ -103,6 +99,7 @@ router.post('/validarLogin', function(req, res) {
         var sLogin;
         kapi.postData(`${urlPath}/Cliente/LogIn/`, obj, function(data) {
             if (typeof data === "undefined") {
+                req.session.destroy();
                 res.render('.', {
                     servicio: false,
                     errors: null
@@ -146,6 +143,7 @@ router.get('/validatetickets', function(req, res) {
         if (req.session.permiso == 0) {
             kapi.getData(`${urlPath}/Cliente/Boleto/Auth`, function(data) {
                 if (typeof data === "undefined") {
+                    req.session.destroy();
                     res.render('.', {
                         servicio: false
                     })
@@ -172,35 +170,13 @@ router.get('/validatetickets', function(req, res) {
     }
 })
 
-// router.post('/validarFactura', function(req, res) {
-//     if (typeof req.session.userId === "undefined") {
-//         res.redirect('/.');
-//     } else {
-//         var obj = {
-//             email: req.body.email,
-//             factura: req.body.factura,
-//             idTienda: req.body.idTienda,
-//             importeAutorizado: req.body.importeAutorizado,
-//             boletosAutorizados: req.body.boletosAutorizados,
-//             usuarioAutorizado: req.body.usuarioAutorizado,
-//             opcion: ''
-//         };
-//         kapi.putData(`${urlPath}/Cliente/LogIn/`, obj, function(data) {
-//             if (opcion == 0) {
-
-//             } else if (opcion == 2) {
-
-//             }
-//         })
-//     }
-// })
-
 
 /* REGISTRO DE NUEVOS USUARIOS*/
 router.get('/register', function(req, res) {
     res.render('register', {
         servicio: true,
-        errors: null
+        errors: null,
+        usuarioRegistrado: false
     })
 })
 
@@ -247,6 +223,7 @@ router.post('/registrarCliente', function(req, res) {
         }
         kapi.postData(`${urlPath}/Cliente`, obj, function(data) {
             if (typeof data === "undefined") {
+                req.session.destroy();
                 res.render('.', {
                     servicio: false
                 })
@@ -254,8 +231,10 @@ router.post('/registrarCliente', function(req, res) {
                 if (data.status == 200) {
                     res.redirect('/mytickets');
                 } else if (data.status == 400) {
-                    res.render('login', {
-                        usuarioRegistrado: true
+                    res.render('register', {
+                        usuarioRegistrado: true,
+                        servicio: true,
+                        errors: ''
                     });
                 }
             }
@@ -280,6 +259,7 @@ router.get('/mytickets', function(req, res) {
                         req.session.nombreUsuario = nombreUsuario.data;
                         kapi.getData(`${urlPath}/Cliente/Boletos/Email/${req.session.userId}`, function(data) {
                             if (typeof data === "undefined") {
+                                req.session.destroy();
                                 res.render('.', {
                                     servicio: false
                                 })
@@ -312,7 +292,7 @@ router.get('/uploadticket', function(req, res) {
     } else {
         kapi.getData(`${urlPath}/Tiendas/Catalogo`, function(data) {
             if (typeof data === "undefined") {
-                console.log("EL SERVICIO SE CHURIÓ");
+                req.session.destroy();
                 res.render('.', {
                     servicio: false,
                     errors: null
@@ -387,6 +367,7 @@ router.post('/registrarFactura', function(req, res) {
                     }
                     kapi.postData(`${urlPath}/Cliente/Boleto`, obj, function(data) {
                         if (typeof data === "undefined") {
+                            req.session.destroy();
                             res.render('.', {
                                 servicio: false
                             })

@@ -36,11 +36,11 @@
                 <form method="post" action="validarLogin">
                     <div class="input-field">
                         <label for="user">Correo</label>
-                        <input type="text" name="email" placeholder="Mi correo">
+                        <input onkeyup="validaDatos()" type="text" name="email" placeholder="Mi correo">
                     </div>
                     <div class="input-field">
                         <label for="password">Contraseña</label>
-                        <input type="password" name="pass" placeholder="Mi contraseña">
+                        <input onkeyup="validaDatos()" type="password" name="pass" placeholder="Mi contraseña">
                     </div>
                     <div class="input-field left-align">
                         <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit" disabled>Ingresar

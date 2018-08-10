@@ -65,10 +65,8 @@
                                         <form method="post" action="registrarFactura">
                                             <div class="row">
                                                 <div class="input-field col s12 m6 l4">
-                                                    <!-- <label for="tiendaPicked">
-                                                                Selecciona una sucursal
-                                                    </label> -->
-                                                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default">
+
+                                                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default" onchange="validaDatos()">
                                                         <option value="" disabled selected>Selecciona una sucursal</option>
                                                         <% for (var i = 0; i < tiendas.length; i++) { %>
                                                             <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
@@ -79,19 +77,20 @@
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Factura</label>
-                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10">
+                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10" onkeyup="validaDatos()">
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label># de cliente</label>
-                                                    <input type="text" name="cliente" value="<%=cliente %>">
+                                                    <input type="text" name="cliente" value="<%=cliente %>" onkeyup="validaDatos()">
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Fecha de Compra</label>
-                                                    <input type="text" name="fecha" class="datepicker" value="<%=fecha %>">
+                                                    <input type="text" name="fecha" class="datepicker" value="<%=fecha %>" onchange="validaDatos()">
                                                 </div>
+
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Importe</label>
-                                                    <input type="text" name="importe" value="<%=importe %>">
+                                                    <input type="text" name="importe" value="<%=importe %>" onkeyup="validaDatos()">
                                                 </div>
                                                 <div class="input-field col s12 m6 l4 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k"></div>
                                             </div>

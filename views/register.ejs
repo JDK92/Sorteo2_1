@@ -29,127 +29,131 @@
                     </ul>
                     <%}%>
 
+                        <% if (usuarioRegistrado) { %>
+                            <h4 class="red-text text-darken-3">Este usuario ya se encuentra registrado. Favor de iniciar sesion.</h4>
+                            <% }%>
 
 
-                        <p>
-                            Si ya tienes cuenta,
-                            <a href="login">haz clic aquí para iniciar sesión</a>
-                        </p>
+                                <p>
+                                    Si ya tienes cuenta,
+                                    <a href="login">haz clic aquí para iniciar sesión</a>
+                                </p>
 
-                        <form method="post" action="registrarCliente">
-                            <div class="row">
-                                <h5>Datos personales</h5>
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="nombre">Nombre</label>
-                                        <input type="text" name="nomCliente">
+                                <form method="post" action="registrarCliente">
+                                    <div class="row">
+                                        <h5>Datos personales</h5>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="nombre">Nombre</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="nomCliente">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="apellidoPaterno">Apellido paterno</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="apellidoPaterno">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="apellidoMaterno">Apellido materno</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="apellidoMaterno">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="apellidoPaterno">Apellido paterno</label>
-                                        <input type="text" name="apellidoPaterno">
-                                    </div>
-                                </div>
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="apellidoMaterno">Apellido materno</label>
-                                        <input type="text" name="apellidoMaterno">
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <h5>Domicilio</h5>
-                                <div class="col s12 m6 xl4">
-                                    <div class="input-field">
-                                        <label for="nomCalle">Calle</label>
-                                        <input type="text" name="nomCalle">
+                                    <div class="row">
+                                        <h5>Domicilio</h5>
+                                        <div class="col s12 m6 xl4">
+                                            <div class="input-field">
+                                                <label for="nomCalle">Calle</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="nomCalle">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m3 xl2">
+                                            <div class="input-field">
+                                                <label for="numExterior">Número exterior</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="numExterior">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m3 xl2">
+                                            <div class="input-field">
+                                                <label for="numInterior">Número interior</label>
+                                                <input type="text" name="numInterior">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m6 xl4">
+                                            <div class="input-field">
+                                                <label for="nomColonia">Colonia</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="nomColonia">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m6 xl2">
+                                            <div class="input-field">
+                                                <label for="codigoPostal">Código Postal</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="codigoPostal" maxlength="5">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m6 xl5">
+                                            <div class="input-field">
+                                                <label for="ciudad">Ciudad</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="nomCiudad">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m6 xl5">
+                                            <div class="input-field">
+                                                <label for="estado">Estado</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="nomEstado">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col s12 m3 xl2">
-                                    <div class="input-field">
-                                        <label for="numExterior">Número exterior</label>
-                                        <input type="text" name="numExterior">
-                                    </div>
-                                </div>
-                                <div class="col s12 m3 xl2">
-                                    <div class="input-field">
-                                        <label for="numInterior">Número interior</label>
-                                        <input type="text" name="numInterior">
-                                    </div>
-                                </div>
-                                <div class="col s12 m6 xl4">
-                                    <div class="input-field">
-                                        <label for="nomColonia">Colonia</label>
-                                        <input type="text" name="nomColonia">
-                                    </div>
-                                </div>
-                                <div class="col s12 m6 xl2">
-                                    <div class="input-field">
-                                        <label for="codigoPostal">Código Postal</label>
-                                        <input type="text" name="codigoPostal" maxlength="6">
-                                    </div>
-                                </div>
-                                <div class="col s12 m6 xl5">
-                                    <div class="input-field">
-                                        <label for="ciudad">Ciudad</label>
-                                        <input type="text" name="nomCiudad">
-                                    </div>
-                                </div>
-                                <div class="col s12 m6 xl5">
-                                    <div class="input-field">
-                                        <label for="estado">Estado</label>
-                                        <input type="text" name="nomEstado">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <h5>Contacto</h5>
-                                <div class="col s12 m6 ">
-                                    <div class="input-field">
-                                        <label for="numTelefono">Teléfono casa</label>
-                                        <input type="text" name="numTelefono" maxlength="10">
-                                    </div>
-                                </div>
-                                <div class="col s12 m6 ">
-                                    <div class="input-field">
-                                        <label for="numCelular">Celular</label>
-                                        <input type="text" name="numCelular" maxlength="10">
-                                    </div>
-                                </div>
+                                    <div class="row">
+                                        <h5>Contacto</h5>
+                                        <div class="col s12 m6 ">
+                                            <div class="input-field">
+                                                <label for="numTelefono">Teléfono casa</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="numTelefono" maxlength="10">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m6 ">
+                                            <div class="input-field">
+                                                <label for="numCelular">Celular</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="text" name="numCelular" maxlength="10">
+                                            </div>
+                                        </div>
 
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="email">Correo</label>
-                                        <input type="email" name="email">
-                                    </div>
-                                </div>
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="password">Contraseña</label>
-                                        <input type="password" name="password">
-                                    </div>
-                                </div>
-                                <div class="col s12 m4 ">
-                                    <div class="input-field">
-                                        <label for="repeatPassword">Repetir contraseña</label>
-                                        <input type="password" name="repeatPassword">
-                                    </div>
-                                </div>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="email">Correo</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="email" name="email">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="password">Contraseña</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="password" name="password" id="password">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 m4 ">
+                                            <div class="input-field">
+                                                <label for="confirmPassword">Confirmar contraseña</label>
+                                                <input class="requiredField" onkeyup="validaRegistro()" type="password" name="confirmPassword" id="confirmPassword">
+                                            </div>
+                                            <span id="message" class="text-darken-3"></span>
+                                        </div>
 
-                                <div class="center-align">
-                                    <button class="btn waves-effect waves-green green darken-2" type="submit" id="submit" disabled>ENVIAR</button>
-                                </div>
-                            </div>
-                        </form>
+                                        <div class="center-align">
+                                            <button class="btn waves-effect waves-green green darken-2" type="submit" id="submit" disabled>ENVIAR</button>
+                                        </div>
+                                    </div>
+                                </form>
 
 
-                        <p class="center-align">
-                            <a href="." class="btn-small waves-effect waves-light black white-text">
+                                <p class="center-align">
+                                    <a href="." class="btn-small waves-effect waves-light black white-text">
                                 Regresar
                             </a>
-                        </p>
+                                </p>
     </main>
     <canvas id="confetti-holder" class="confetti hide-on-med-and-down"></canvas>
     <script src="/js/materialize.min.js"></script>

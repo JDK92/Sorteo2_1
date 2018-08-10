@@ -33,45 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function validaLogin() {
-    isValid = true;
-    $('input').each(function() {
-        if ($(this).val() === '')
-            isValid = false;
-    });
-
-    habilitarLogin();
-};
-
-function habilitarLogin() {
-    if (!isValid) {
-        $('#submit').attr('disabled', 'disabled');
-    } else if (isValid) {
-        $('#submit').removeAttr('disabled');
-    }
-}
-
-
-
-function validaRegistro() {
-    isValid = true;
-    $('input.requiredField').each(function() {
-        if ($(this).val() === '' || ($('#password').val() != $('#confirmPassword').val()))
-            isValid = false;
-    });
-
-    habilitarRegistro();
-};
-
-function habilitarRegistro() {
-    if (!isValid) {
-        $('#message').html('Debes de escribir la misma contraseña').removeClass('green-text').addClass('red-text');
-        $('#submit').attr('disabled', 'disabled');
-    } else if (isValid) {
-        $('#message').html('Contraseña confirmada').removeClass('red-text').addClass('green-text');
-        $('#submit').removeAttr('disabled');
-    }
-}
 
 function validaDatos() {
     isValid = true;
@@ -84,6 +45,24 @@ function validaDatos() {
         isValid = false;
     habilitarSubmit();
 };
+
+function validaRegistro() {
+    isValid = true;
+    $('input').each(function() {
+        if ($(this).val() === '')
+            isValid = false;
+    });
+
+    habilitarRegistro();
+};
+
+function habilitarRegistro() {
+    if (!isValid || $('#password') != $('#confirmPassword')) {
+        $('#submit').attr('disabled', 'disabled');
+    } else if (isValid && $('#password') == $('#confirmPassword')) {
+        $('#submit').removeAttr('disabled');
+    }
+}
 
 
 function habilitarSubmit() {
@@ -103,20 +82,3 @@ function capcha_expired() {
     captchaFilled = false;
     habilitarSubmit();
 };
-
-
-
-
-
-
-
-
-$("input[type='checkbox']").change(function() {
-    var a = $("input[type='checkbox']");
-    if (a.length == a.filter(":checked").length) {
-        // alert('all checked');
-        $('#displayPassword').show();
-    } else {
-        $('#displayPassword').hide();
-    }
-});
