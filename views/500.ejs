@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <title>500</title>
+</head>
+
+<body>
+
+    <main class="container">
+        <h1 class="red-text text-darken-4">
+            500
+        </h1>
+        <p class="flow-text">
+            Ocurrió un error al procesar la información.
+        </p>
+        <p class="flow-text">
+            Inicia sesión de nuevo:
+        </p>
+
+        <div class="row">
+            <div class="col s12 m8 l6 xl6 white">
+                <form method="post" action="validarLogin">
+                    <div class="input-field">
+                        <label for="user">Correo</label>
+                        <input onkeyup="validaDatos()" type="text" name="email" placeholder="Mi correo">
+                    </div>
+                    <div class="input-field">
+                        <label for="password">Contraseña</label>
+                        <input onkeyup="validaDatos()" type="password" name="pass" placeholder="Mi contraseña">
+                    </div>
+                    <div class="input-field left-align">
+                        <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit" disabled>Ingresar
+                        </button>
+                        <p class="grey-text text-darken-4">
+                            Si no recuerdas tu correo o contraseña, comunícate al
+                            <a href="tel:01-800-5876-321">01 800 5876 321</a> para recibir asistencia
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="/js/materialize.min.js"></script>
+</body>
+
+</html>
