@@ -284,7 +284,7 @@ router.get('/mytickets', function (req, res) {
                 if (typeof nombreUsuario === "undefined") {
                     req.session.destroy();
                     res.render('/500');
-                } else { 
+                } else {
 
                     kapi.getData(`${urlPath}/Boleto/Cancelados/${req.session.userId}`, function (boletosCancelados) {
                         if (typeof boletosCancelados === "undefined") {
@@ -310,6 +310,7 @@ router.get('/mytickets', function (req, res) {
                                 } else {
                                     if (data.status == 200) {
                                         res.render('mytickets', {
+                                            success: '',
                                             datos: data.data,
                                             nombreUsuario: req.session.nombreUsuario,
                                             cancelados: req.session.objBoletosCancelados
@@ -367,7 +368,6 @@ router.get('/uploadticket', function (req, res) {
 router.post('/registrarFactura', function (req, res) {
     var metodo;
     var obj;
-
     req.check('factura', 'Debes ingresar sólo números en factura').matches(/^\d{1,45}$/);
     req.check('cliente', 'Debes ingresar sólo números # de cliente').matches(/^\d{1,45}$/);
     req.check('importe', 'Debes ingresar sólo números en importe').matches(/^[0-9]+(\.[0-9]{1,2})?$/);
@@ -436,6 +436,7 @@ router.post('/registrarFactura', function (req, res) {
                         } else {
                             if (data.status == 200) {
                                 res.redirect('/mytickets');
+
                             } else if (data.status == 400) {
                                 console.log("Error 400");
                                 res.render('uploadticket', {

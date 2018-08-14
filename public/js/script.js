@@ -1,3 +1,14 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.carousel');
+    var instances = M.Carousel.init(elems, {
+        indicators: true,
+        padding: 50,
+        fullWidth: true
+    })
+});
+
+
+
 var isValid = true;
 var captchaFilled = false;
 
@@ -10,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
         format: 'dd/mm/yyyy',
-        minDate: new Date(2018,07,15),
+        minDate: new Date(2018, 07, 15),
         i18n: {
             months: ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO',
                 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
