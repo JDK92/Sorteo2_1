@@ -5,9 +5,9 @@
             "psw": "Ap1$FctPDFXml"
         },
         "dir": {
-            "url": "192.168.34.141",
+            "url": "192.168.13.209",
             "port": "8080",
-            "path": "60Aniversario"
+            "path": "WsSorteos/60Aniversario"
         }
     }
 }

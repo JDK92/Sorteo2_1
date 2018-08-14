@@ -1,15 +1,16 @@
 var isValid = true;
 var captchaFilled = false;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
         format: 'dd/mm/yyyy',
+        minDate: new Date(2018,07,15),
         i18n: {
             months: ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO',
                 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             close: 'cerrar',
             cancel: 'cancelar'
         },
-        autoClose: true
+        autoClose: true,
     });
 });
 
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function validaLogin() {
     isValid = true;
-    $('input').each(function() {
+    $('input').each(function () {
         if ($(this).val() === '')
             isValid = false;
     });
@@ -57,7 +58,7 @@ function habilitarLogin() {
 
 function validaRegistro() {
     isValid = true;
-    $('input.requiredField').each(function() {
+    $('input.requiredField').each(function () {
         if ($(this).val() === '' || ($('#password').val() != $('#confirmPassword').val()))
             isValid = false;
     });
@@ -77,7 +78,7 @@ function habilitarRegistro() {
 
 function validaDatos() {
     isValid = true;
-    $('input').each(function() {
+    $('input').each(function () {
         if ($(this).val() === '')
             isValid = false;
     });
@@ -113,7 +114,7 @@ function capcha_expired() {
 
 
 
-$("input[type='checkbox']").change(function() {
+$("input[type='checkbox']").change(function () {
     var a = $("input[type='checkbox']");
     if (a.length == a.filter(":checked").length) {
         // alert('all checked');
