@@ -24,9 +24,8 @@ router.get('/soporte', function (req, res) {
         if (req.session.permiso == 2) {
             kapi.getData(`${urlPath}/Cliente/Nombre/${req.session.userId}`, function (nombreUsuario) {
                 if (typeof nombreUsuario === "undefined") {
-                    res.render('.', {
-                        servicio: false
-                    })
+                    req.session.destroy();
+                    res.render('/500');
                 } else {
                     if (nombreUsuario.status == 200) {
                         req.session.nombreUsuario = nombreUsuario.data;
@@ -47,30 +46,32 @@ router.get('/soporte', function (req, res) {
 })
 
 router.post('/encontrarCliente', function (req, res) {
-    kapi.getData(`${urlPath}/Cliente/Email/${req.body.mail}`, function (data) {
-        if (typeof data === "undefined") {
-            req.session.destroy();
-            res.render('.', {
-                servicio: false
-            })
-        } else if (data.status == 200) {
-            res.render('soporte', {
-                error: '',
-                success: true,
-                cliente: data.data,
-                nombreUsuario: req.session.nombreUsuario
-            })
-        } else if (data.status == 404) {
-            res.render('soporte', {
-                error: 404,
-                success: '',
-                nombreUsuario: req.session.nombreUsuario
+    if (typeof req.session.userId === "undefined") {
+        res.redirect('/.');
+    } else {
+        kapi.getData(`${urlPath}/Cliente/Email/${req.body.mail}`, function (data) {
+            if (typeof data === "undefined") {
+                req.session.destroy();
+                res.redirect('/500')
+            } else if (data.status == 200) {
+                res.render('soporte', {
+                    error: '',
+                    success: true,
+                    cliente: data.data,
+                    nombreUsuario: req.session.nombreUsuario
+                })
+            } else if (data.status == 404) {
+                res.render('soporte', {
+                    error: 404,
+                    success: '',
+                    nombreUsuario: req.session.nombreUsuario
 
-            })
-        } else if (data.status = 500) {
-            res.redirect("/.");
-        }
-    })
+                })
+            } else if (data.status = 500) {
+                res.redirect("/.");
+            }
+        })
+    }
 })
 
 
@@ -91,46 +92,33 @@ router.get('/login', function (req, res) {
 })
 
 router.post('/validarLogin', function (req, res) {
-    req.check('email', 'Debes ingresar tu correo para ingresar').notEmpty();
-    req.check('pass', 'Debes ingresar tu contraseña para ingresar').notEmpty();
-    var errors = req.validationErrors();
-    if (errors) {
-        res.render('.', {
-            servicio: true,
-            errors: errors
-        });
-    } else {
-        var obj = {
-            email: req.body.email,
-            pass: req.body.pass
-        };
-        var sLogin;
-        kapi.postData(`${urlPath}/Cliente/LogIn/`, obj, function (data) {
-            if (typeof data === "undefined") {
-                req.session.destroy();
-                res.render('.', {
-                    servicio: false,
-                    errors: null
-                })
-            } else {
-                if (data.status == 200) {
-                    req.session.userId = obj.email;
-                    req.session.permiso = data.data;
-                }
-                if (data.status == 200 && data.data == 1) {
-                    res.redirect('/mytickets');
-                } else if (data.status == 200 && data.data == 0) {
-                    res.redirect('/validatetickets')
-                } else if (data.status == 200 && data.data == 2) {
-                    res.redirect('/soporte');
-                } else {
-                    res.render('login', {
-                        sLogin: data.status
-                    })
-                }
+    var obj = {
+        email: req.body.email,
+        pass: req.body.pass
+    };
+    var sLogin;
+    kapi.postData(`${urlPath}/Cliente/LogIn/`, obj, function (data) {
+        if (typeof data === "undefined") {
+            req.session.destroy();
+            res.redirect('/500')
+        } else {
+            if (data.status == 200) {
+                req.session.userId = obj.email;
+                req.session.permiso = data.data;
             }
-        })
-    }
+            if (data.status == 200 && data.data == 1) {
+                res.redirect('/mytickets');
+            } else if (data.status == 200 && data.data == 0) {
+                res.redirect('/validatetickets')
+            } else if (data.status == 200 && data.data == 2) {
+                res.redirect('/soporte');
+            } else {
+                res.render('login', {
+                    sLogin: data.status
+                })
+            }
+        }
+    })
 })
 
 router.get('/cerrarSesion', function (req, res) {
@@ -152,9 +140,7 @@ router.get('/validatetickets', function (req, res) {
             kapi.getData(`${urlPath}/Cliente/Boleto/Auth`, function (data) {
                 if (typeof data === "undefined") {
                     req.session.destroy();
-                    res.render('.', {
-                        servicio: false
-                    })
+                    res.render('/500')
                 } else {
                     if (data.status == 404) {
                         res.render('validatetickets', {
@@ -179,17 +165,43 @@ router.get('/validatetickets', function (req, res) {
 })
 
 router.post('/validarFactura', function (req, res) {
-    var obj = {
-        sucursal: req.body.sucursal,
-        nombre: req.body.nombre,
-        email: req.body.email,
-        fecha: req.body.fecha,
-        factura: req.body.factura,
-        importe: req.body.importe,
-        accion: req.body.accion
+    var obj;
+    if (req.session.userId === "undefined") {
+        res.redirect('/.');
     }
-    console.log(obj);
-})
+    else {
+        if (req.body.accion === undefined) {
+            res.redirect('/validatetickets');
+        }
+        else {
+            obj = {
+                email: req.body.email,
+                factura: req.body.factura,
+                idTienda: req.body.sucursal.substring(0, 4),
+                boletosAutorizados: 0,
+                importeAutorizado: 0,
+                usuarioAutorizo: req.session.userId,
+                opcion: Number(req.body.accion)
+            };
+            kapi.putData(`${urlPath}/Cliente/Boleto/Auth`, obj, function (data) {
+                if (typeof data === "undefined") {
+                    req.session.destroy();
+                    res.render('.', {
+                        servicio: false
+                    })
+                }
+                else {
+                    if (data.status == 200) {
+                        res.redirect('/validatetickets');
+                    }
+                    else if (data.status == 500) {
+
+                    }
+                }
+            });
+        }
+    }
+});
 
 
 /* REGISTRO DE NUEVOS USUARIOS*/
@@ -245,9 +257,7 @@ router.post('/registrarCliente', function (req, res) {
         kapi.postData(`${urlPath}/Cliente`, obj, function (data) {
             if (typeof data === "undefined") {
                 req.session.destroy();
-                res.render('.', {
-                    servicio: false
-                })
+                res.render('/500')
             } else {
                 if (data.status == 200) {
                     res.redirect('/mytickets');
@@ -272,33 +282,49 @@ router.get('/mytickets', function (req, res) {
         if (req.session.permiso == 1) {
             kapi.getData(`${urlPath}/Cliente/Nombre/${req.session.userId}`, function (nombreUsuario) {
                 if (typeof nombreUsuario === "undefined") {
-                    res.render('.', {
-                        servicio: false
-                    })
-                } else {
-                    if (nombreUsuario.status == 200) {
-                        req.session.nombreUsuario = nombreUsuario.data;
-                        kapi.getData(`${urlPath}/Cliente/Boletos/Email/${req.session.userId}`, function (data) {
-                            if (typeof data === "undefined") {
+                    req.session.destroy();
+                    res.render('/500');
+                } else { 
+
+                    kapi.getData(`${urlPath}/Boleto/Cancelados/${req.session.userId}`, function (boletosCancelados) {
+                        if (typeof boletosCancelados === "undefined") {
+                            req.session.destroy();
+                            res.render('/500');
+                        } else {
+                            if (boletosCancelados.status === 500) {
                                 req.session.destroy();
-                                res.render('.', {
-                                    servicio: false
-                                })
-                            } else {
-                                if (data.status == 200) {
-                                    res.render('mytickets', {
-                                        datos: data.data,
-                                        nombreUsuario: req.session.nombreUsuario
+                                res.render('/500');
+                            }
+                            else {
+                                req.session.objBoletosCancelados = boletosCancelados.data;
+                            }
+                        }
+                        if (nombreUsuario.status == 200) {
+                            req.session.nombreUsuario = nombreUsuario.data;
+                            kapi.getData(`${urlPath}/Cliente/Boletos/Email/${req.session.userId}`, function (data) {
+                                if (typeof data === "undefined") {
+                                    req.session.destroy();
+                                    res.render('.', {
+                                        servicio: false
                                     })
                                 } else {
-                                    res.render('mytickets', {
-                                        datos: [],
-                                        nombreUsuario: req.session.nombreUsuario
-                                    })
+                                    if (data.status == 200) {
+                                        res.render('mytickets', {
+                                            datos: data.data,
+                                            nombreUsuario: req.session.nombreUsuario,
+                                            cancelados: req.session.objBoletosCancelados
+                                        })
+                                    } else {
+                                        res.render('mytickets', {
+                                            datos: [],
+                                            nombreUsuario: req.session.nombreUsuario,
+                                            cancelados: req.session.objBoletosCancelados
+                                        })
+                                    }
                                 }
-                            }
-                        })
-                    }
+                            })
+                        }
+                    })
                 }
             })
         } else {
@@ -314,10 +340,7 @@ router.get('/uploadticket', function (req, res) {
         kapi.getData(`${urlPath}/Tiendas/Catalogo`, function (data) {
             if (typeof data === "undefined") {
                 req.session.destroy();
-                res.render('.', {
-                    servicio: false,
-                    errors: null
-                })
+                res.render('/500');
             } else {
                 if (data.status == 200) {
                     tiendas = data.data;
@@ -342,10 +365,13 @@ router.get('/uploadticket', function (req, res) {
 })
 
 router.post('/registrarFactura', function (req, res) {
+    var metodo;
+    var obj;
 
     req.check('factura', 'Debes ingresar sólo números en factura').matches(/^\d{1,45}$/);
     req.check('cliente', 'Debes ingresar sólo números # de cliente').matches(/^\d{1,45}$/);
     req.check('importe', 'Debes ingresar sólo números en importe').matches(/^[0-9]+(\.[0-9]{1,2})?$/);
+
     var errors = req.validationErrors();
     if (errors) {
         res.render('uploadticket', {
@@ -368,7 +394,7 @@ router.post('/registrarFactura', function (req, res) {
             if (captcha === undefined ||
                 captcha === '' ||
                 captcha === null) {
-                console.log("SIN PATH W");
+
             }
             const secretKey = '6LeRx2cUAAAAAGxIqF6lKk6IQMLWAmZcFc4StIXh';
             const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&
@@ -376,17 +402,32 @@ router.post('/registrarFactura', function (req, res) {
             request(verifyUrl, (err, response, body) => {
                 body = JSON.parse(body);
                 if (body.success !== undefined && !body.success) {
-                    //console.log("TRONO CAPTCHA WWW");
+
                 } else {
-                    var obj = {
-                        email: emailUsuario,
-                        cliente: req.body.cliente,
-                        factura: req.body.factura,
-                        importe: req.body.importe,
-                        fecha: req.body.fecha.split('/').reverse().join(''),
-                        idTienda: req.body.tiendaPicked,
+                    if (req.body.tiendaPicked.includes("MZ")) {
+                        obj = {
+                            email: req.session.userId,
+                            factura: req.body.factura,
+                            fechaFactura: req.body.fecha.split('/').reverse().join(''),
+                            importe: req.body.importe,
+                            cantBoletos: 0,
+                            idTienda: req.body.tiendaPicked,
+                        };
+                        metodo = "Cliente/Boleto/Auth";
+                    } else {
+                        var obj = {
+                            email: emailUsuario,
+                            cliente: req.body.cliente,
+                            factura: req.body.factura,
+                            importe: req.body.importe,
+                            fecha: req.body.fecha.split('/').reverse().join(''),
+                            idTienda: req.body.tiendaPicked,
+                        };
+                        metodo = "Cliente/Boleto";
                     }
-                    kapi.postData(`${urlPath}/Cliente/Boleto`, obj, function (data) {
+
+
+                    kapi.postData(`${urlPath}/${metodo}`, obj, function (data) {
                         if (typeof data === "undefined") {
                             req.session.destroy();
                             res.render('.', {

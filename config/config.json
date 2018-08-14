@@ -5,7 +5,7 @@
             "psw": "Ap1$FctPDFXml"
         },
         "dir": {
-            "url": "192.168.13.103",
+            "url": "192.168.34.141",
             "port": "8080",
             "path": "60Aniversario"
         }

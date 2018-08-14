@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+/* LOGIN */
+
 function validaLogin() {
     isValid = true;
     $('input').each(function() {
@@ -51,7 +53,7 @@ function habilitarLogin() {
     }
 }
 
-
+/* REGISTRO */
 
 function validaRegistro() {
     isValid = true;

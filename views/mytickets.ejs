@@ -37,29 +37,10 @@
 
     <main class="container center-align">
 
-        <% if(datos.length > 0){ %>
-
+        <% if  (cancelados.length > 0) { %>
             <h3>
-                Total de boletos:
+                Los siguientes boletos han sido removidos de tu cuenta:
             </h3>
-
-            <div class="row">
-                <div class="col s4 offset-s4  xl2 offset-xl5 red-text text-darken-2">
-                    <h2>
-                        <%= datos.length %>
-                    </h2>
-                </div>
-
-            </div>
-            <p>
-                <strong>
-                            <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
-                                Registrar factura
-                            </a>
-                        </strong>
-            </p>
-
-            <h3>Mis boletos</h3>
             <div class="row">
                 <div class="col l6 offset-l3 xl4 offset-xl4">
                     <table class="responsive-table centered striped">
@@ -70,13 +51,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% for (var i = 0; i < datos.length; i++) { %>
+                            <% for (let i = 0; i < cancelados.length; i++) { %>
                                 <tr>
                                     <td>
-                                        <%= datos[i].factura %>
+                                        <%= cancelados[i].factura %>
                                     </td>
                                     <td>
-                                        <%= datos[i].boleto %>
+                                        <%= cancelados[i].boleto %>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -84,14 +65,66 @@
                     </table>
                 </div>
             </div>
+            <% } %>
 
 
 
-            <% } else{ %>
-                <p class="flow-text">Todavía no tienes boletos asignados. Haz clic en el botón para registrar tu factura.
-                </p>
-                <a href="uploadticket" class="btn waves-effect waves-green green darken-2">Registrar factura</a>
-                <% } %>
+
+                        <% if(datos.length > 0){ %>
+
+                            <h3>
+                                Total de boletos:
+                            </h3>
+
+                            <div class="row">
+                                <div class="col s4 offset-s4  xl2 offset-xl5 red-text text-darken-2">
+                                    <h2>
+                                        <%= datos.length %>
+                                    </h2>
+                                </div>
+
+                            </div>
+                            <p>
+                                <strong>
+                                    <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
+                                        Registrar factura
+                                    </a>
+                                </strong>
+                            </p>
+
+                            <h3>Mis boletos</h3>
+                            <div class="row">
+                                <div class="col l6 offset-l3 xl4 offset-xl4">
+                                    <table class="responsive-table centered striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Factura</th>
+                                                <th>Folio boleto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (var i = 0; i < datos.length; i++) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= datos[i].factura %>
+                                                    </td>
+                                                    <td>
+                                                        <%= datos[i].boleto %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                            <% } else{ %>
+                                <p class="flow-text">Todavía no tienes boletos asignados. Haz clic en el botón para registrar tu factura.
+                                </p>
+                                <a href="uploadticket" class="btn waves-effect waves-green green darken-2">Registrar factura</a>
+                                <% } %>
 
     </main>
     <script src="/js/materialize.min.js"></script>

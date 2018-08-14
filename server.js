@@ -27,7 +27,7 @@ var sessionRedis = session({
         port: 6379,
         pass: 'S0l0Kur0d4#',
         //client: client,
-        ttl: 60 * 15
+        ttl: 60 * 60
     }),
     name: "Redis",
     secret: "pruebaRedis",
