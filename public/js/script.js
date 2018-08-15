@@ -1,14 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var elems = document.querySelectorAll('.carousel');
-    var instances = M.Carousel.init(elems, {
-        indicators: true,
-        padding: 50,
-        fullWidth: true
-    })
-});
-
-
-
 var isValid = true;
 var captchaFilled = false;
 
@@ -117,13 +106,6 @@ function capcha_expired() {
     captchaFilled = false;
     habilitarSubmit();
 };
-
-
-
-
-
-
-
 
 $("input[type='checkbox']").change(function () {
     var a = $("input[type='checkbox']");
