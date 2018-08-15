@@ -23,11 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 var sessionRedis = session({
     store: new RedisStore({
-        host: '192.168.13.209',
+        // host: '192.168.13.209',
+        host: 'localhost',
         port: 6379,
-        pass: 'S0l0Kur0d4#',
+        //pass: 'S0l0Kur0d4#',
         //client: client,
-        ttl: 60 * 60
+        ttl: 60 * 15
     }),
     name: "Redis",
     secret: "pruebaRedis",

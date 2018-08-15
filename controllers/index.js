@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
-    request = require('request')
+    request = require('request'),
+    md5 = require('md5');
 
 var kapi = require('../models/api.js');
 var config = require('../config/config.json');
@@ -95,7 +96,7 @@ router.get('/login', function (req, res) {
 router.post('/validarLogin', function (req, res) {
     var obj = {
         email: req.body.email,
-        pass: req.body.pass
+        pass: md5(req.body.pass)
     };
     var sLogin;
     kapi.postData(`${urlPath}/Cliente/LogIn/`, obj, function (data) {
@@ -255,7 +256,7 @@ router.post('/registrarCliente', function (req, res) {
             numTelefono: req.body.numTelefono,
             numCelular: req.body.numCelular,
             email: req.body.email,
-            password: req.body.password
+            password: md5(req.body.password)
         }
         kapi.postData(`${urlPath}/Cliente`, obj, function (data) {
             if (typeof data === "undefined") {
@@ -301,8 +302,12 @@ router.get('/mytickets', function (req, res) {
                                 req.session.destroy();
                                 res.render('/500');
                             }
-                            else {
-                                req.session.objBoletosCancelados = boletosCancelados.data;
+                            else { 
+                                console.log(req.session.objBoletosCancelados);
+                                if(typeof req.session.objBoletosCancelados === "undefined")
+                                {
+                                    req.session.objBoletosCancelados = boletosCancelados.data;
+                                }
                             }
                         }
                         if (nombreUsuario.status == 200) {
@@ -349,11 +354,11 @@ router.get('/uploadticket', function (req, res) {
                 res.render('/500');
             } else {
                 if (data.status == 200) {
-                    tiendas = data.data;
+                    req.session.tiendas = data.data;
                     res.render('uploadticket', {
                         error: 0,
                         errors: '',
-                        tiendas: tiendas,
+                        tiendas: req.session.tiendas,
                         factura: '',
                         cliente: '',
                         fecha: '',
@@ -363,7 +368,7 @@ router.get('/uploadticket', function (req, res) {
                         nombreUsuario: req.session.nombreUsuario
                     });
                 } else if (data.status == 404) {
-                    res.redirect('/mytickets');
+                    res.redirect('/myticketsmytickets');
                 }
             }
         })
@@ -382,7 +387,7 @@ router.post('/registrarFactura', function (req, res) {
         res.render('uploadticket', {
             error: 0,
             errors: errors,
-            tiendas: tiendas,
+            tiendas: req.session.tiendas,
             factura: '',
             cliente: '',
             fecha: '',
@@ -421,7 +426,7 @@ router.post('/registrarFactura', function (req, res) {
                         metodo = "Cliente/Boleto/Auth";
                     } else {
                         var obj = {
-                            email: emailUsuario,
+                            email: req.session.userId,
                             cliente: req.body.cliente,
                             factura: req.body.factura,
                             importe: req.body.importe,
@@ -450,7 +455,12 @@ router.post('/registrarFactura', function (req, res) {
                                     servicio: true,
                                     errors: '',
                                     nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: tiendas
+                                    tiendas: req.session.tiendas,
+                                    factura: '',
+                                    cliente: '',
+                                    importe: '',
+                                    nombreTienda: '',
+                                    fecha: ''
                                 })
                             } else if (data.status == 404) {
                                 console.log("Error 404");
@@ -464,7 +474,7 @@ router.post('/registrarFactura', function (req, res) {
                                     servicio: true,
                                     errors: '',
                                     nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: tiendas
+                                    tiendas: req.session.tiendas
                                 });
                             } else if (data.status == 500) {
                                 console.log("Error 500");
@@ -478,7 +488,7 @@ router.post('/registrarFactura', function (req, res) {
                                     servicio: true,
                                     errors: '',
                                     nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: tiendas
+                                    tiendas: req.session.tiendas
                                 });
                             }
                         }
