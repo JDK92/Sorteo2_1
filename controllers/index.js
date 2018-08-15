@@ -87,7 +87,8 @@ router.get('/', function (req, res) {
 
 router.get('/login', function (req, res) {
     res.render('login', {
-        sLogin: ''
+        sLogin: '',
+        nuevoUsuario: ''
     })
 })
 
@@ -114,7 +115,8 @@ router.post('/validarLogin', function (req, res) {
                 res.redirect('/soporte');
             } else {
                 res.render('login', {
-                    sLogin: data.status
+                    sLogin: data.status,
+                    nuevoUsuario: ''
                 })
             }
         }
@@ -209,7 +211,7 @@ router.get('/register', function (req, res) {
     res.render('register', {
         servicio: true,
         errors: null,
-        usuarioRegistrado: false
+        usuarioRegistrado: ''
     })
 })
 
@@ -235,7 +237,8 @@ router.post('/registrarCliente', function (req, res) {
     if (errors) {
         res.render('register', {
             servicio: true,
-            errors: errors
+            errors: errors,
+            usuarioRegistrado: ''
         });
     } else {
         var obj = {
@@ -260,7 +263,10 @@ router.post('/registrarCliente', function (req, res) {
                 res.render('/500')
             } else {
                 if (data.status == 200) {
-                    res.redirect('/mytickets');
+                    res.render('login', {
+                        sLogin: '',
+                        nuevoUsuario: true
+                    });
                 } else if (data.status == 400) {
                     res.render('register', {
                         usuarioRegistrado: true,
@@ -304,9 +310,7 @@ router.get('/mytickets', function (req, res) {
                             kapi.getData(`${urlPath}/Cliente/Boletos/Email/${req.session.userId}`, function (data) {
                                 if (typeof data === "undefined") {
                                     req.session.destroy();
-                                    res.render('.', {
-                                        servicio: false
-                                    })
+                                    res.redirect('/500');
                                 } else {
                                     if (data.status == 200) {
                                         res.render('mytickets', {
@@ -317,6 +321,7 @@ router.get('/mytickets', function (req, res) {
                                         })
                                     } else {
                                         res.render('mytickets', {
+                                            success: '',
                                             datos: [],
                                             nombreUsuario: req.session.nombreUsuario,
                                             cancelados: req.session.objBoletosCancelados

@@ -26,11 +26,15 @@
 
                 <% if (sLogin == 400) {%>
                     <h5 class="red-text text-darken-3"> Usuario y/o contraseña incorrectos. Intenta de nuevo.</h5>
-                    <% } %>
+                <% } %>
 
-                        <% if (sLogin == 404) {%>
-                            <h5 class="red-text text-darken-3">Este usuario no existe. Favor de registrarse.</h5>
-                            <% } %>
+                <% if (sLogin == 404) {%>
+                    <h5 class="red-text text-darken-3">Este usuario no existe. Favor de registrarse.</h5>
+                <% } %>
+
+                <% if (nuevoUsuario) { %>
+                    <h5 class="green-text text-darken-4">Ahora inicia sesión con tu usuario y contraseña:</h5>
+                <% } %>
 
             </div>
             <div class="col s12 m8 offset-m2 l6 offset-l3 xl6 offset-xl3 white">
