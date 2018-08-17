@@ -9,6 +9,13 @@ var urlPath = `http://${config.api.dir.url}:${config.api.dir.port}/${config.api.
 var emailUsuario;
 var tiendas;
 
+/* RESET PASSWORD */
+router.get('/resetpassword', function (req, res) {
+    res.render('resetpassword', {
+
+    })
+})
+
 
 /* ERROR 500 */
 router.get('/500', function (req, res) {
