@@ -22,12 +22,12 @@
                 <li>
                     <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-med-and-up">
                         <i class="material-icons">
-                                    close
-                                </i>
+                            close
+                        </i>
                     </a>
                     <a href="." class="btn-small red darken-4 waves-effect waves-red hide-on-small-and-down">
-                                Cerrar sesión
-                            </a>
+                        Cerrar sesión
+                    </a>
                 </li>
             </ul>
         </div>
@@ -38,15 +38,15 @@
             <p class="flow-text">Ingresa el correo del cliente del cual quieres encontrar información:</p>
             <div class="row">
 
-                <div class="input-field col s8 m6 ">
+                <div class="input-field col s9 m5 l4">
                     <input id="emailSoporte" type="email" name="mail" class="validate" placeholder="Ingresa correo electrónico" onkeyup="validaSoporte()">
                     <label for="mail">Correo electrónico</label>
                 </div>
 
-                <div class="input-field col s4 m6 center-align">
+                <div class="input-field col s3 m2">
                     <button type="submit" class="btn waves-effect waves-green green darken-2" id="submit" disabled>
-                            Buscar <i class="material-icons right">search</i>
-                        </button>
+                        <i class="material-icons center">search</i>
+                    </button>
                 </div>
             </div>
         </form>
@@ -76,32 +76,32 @@
                                     <td>
                                         <label>
                                             <input type="checkbox" class="filled-in" />
-                                                <span>
-                                                    <%= cliente.nomCliente + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno %>
-                                                </span>
-                                         </label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                                <input type="checkbox" class="filled-in" />
-                                                    <span>
-                                                        <%= cliente.nomCiudad + ', ' + cliente.nomEstado %>
-                                                    </span>
-                                             </label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                                <input type="checkbox" class="filled-in" />
-                                                    <span>
-                                                        <%= cliente.codigoPostal %>
-                                                    </span>
-                                             </label>
+                                            <span>
+                                                <%= cliente.nomCliente + ' ' + cliente.apellidoPaterno + ' ' + cliente.apellidoMaterno %>
+                                            </span>
+                                        </label>
                                     </td>
                                     <td>
                                         <label>
                                             <input type="checkbox" class="filled-in" />
                                             <span>
-                                                    <%= cliente.numCelular %>
+                                                <%= cliente.nomCiudad + ', ' + cliente.nomEstado %>
+                                            </span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" />
+                                            <span>
+                                                <%= cliente.codigoPostal %>
+                                            </span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" class="filled-in" />
+                                            <span>
+                                                <%= cliente.numCelular %>
                                             </span>
                                         </label>
                                     </td>
@@ -121,16 +121,15 @@
 
                         <form method="post" action="restablecerPass" id="restorePass" style="display:none">
                             <div class="row">
-                
-                                <div class="input-field col s8 m6 ">
-                                    <input name="emailReset" class="validate" 
-                                        value="<%=idUsuario %>" readonly>
+
+                                <div class="input-field col s9 m5 l4">
+                                    <input name="emailReset" class="validate" value="<%=idUsuario %>" readonly>
                                 </div>
-                
-                                <div class="input-field col s4 m6 center-align">
-                                    <button type="submit" class="btn waves-effect waves-green green darken-2" id="submit">
-                                            Restablecer
-                                        </button>
+
+                                <div class="input-field col s3 m2 ">
+                                    <button type="submit" class="btn waves-effect waves-red red darken-4 " id="submit">
+                                        <i class="material-icons center">settings_backup_restore</i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
