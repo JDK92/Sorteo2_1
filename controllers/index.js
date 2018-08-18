@@ -526,9 +526,7 @@ router.post('/restablecerPass', function(req, res){
         kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
             if (typeof data === "undefined") {
                 req.session.destroy();
-                res.render('.', {
-                    servicio: false
-                })
+                res.redirect('/500')
             }
             else{
                 if(data.status == 200){
@@ -537,7 +535,7 @@ router.post('/restablecerPass', function(req, res){
                 else if(data.status == 500)
                 {
                     req.session.destroy();
-                    res.redirect('/.');
+                    res.redirect('/500');
                 }
             }
         });
@@ -556,9 +554,7 @@ router.post('/actualizarPass', function(req, res){
         kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
             if (typeof data === "undefined") {
                 req.session.destroy();
-                res.render('.', {
-                    servicio: false
-                })
+                res.redirect('/500');
             }
             else{
                 if(data.status == 200){
@@ -567,7 +563,7 @@ router.post('/actualizarPass', function(req, res){
                 else if(data.status == 500)
                 {
                     req.session.destroy();
-                    res.redirect('/.');
+                    res.redirect('/500');
                 }
             }
         });
