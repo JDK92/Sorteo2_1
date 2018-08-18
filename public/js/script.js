@@ -46,6 +46,16 @@ function validaLogin() {
     habilitarLogin();
 };
 
+function validaSoporte() {
+    isValid = true;
+    $('#emailSoporte').each(function () {
+        if ($(this).val() === '')
+            isValid = false;
+    });
+
+    habilitarLogin();
+};
+
 function habilitarLogin() {
     if (!isValid) {
         $('#submit').attr('disabled', 'disabled');
@@ -111,8 +121,8 @@ $("input[type='checkbox']").change(function () {
     var a = $("input[type='checkbox']");
     if (a.length == a.filter(":checked").length) {
         // alert('all checked');
-        $('#displayPassword').show();
+        $('#restorePass').show();
     } else {
-        $('#displayPassword').hide();
+        $('#restorePass').hide();
     }
 });

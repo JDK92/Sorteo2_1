@@ -6,6 +6,7 @@ var express = require('express'),
 var kapi = require('../models/api.js');
 var config = require('../config/config.json');
 var urlPath = `http://${config.api.dir.url}:${config.api.dir.port}/${config.api.dir.path}`;
+var defaultPass = '96add0499c6b01c0d96ed7ba94573175';
 var emailUsuario;
 var tiendas;
 
@@ -66,14 +67,16 @@ router.post('/encontrarCliente', function (req, res) {
                     error: '',
                     success: true,
                     cliente: data.data,
-                    nombreUsuario: req.session.nombreUsuario
+                    nombreUsuario: req.session.nombreUsuario,
+                    idUsuario: req.body.mail
                 })
             } else if (data.status == 404) {
                 res.render('soporte', {
                     error: 404,
                     success: '',
-                    nombreUsuario: req.session.nombreUsuario
-
+                    cliente: data.data,
+                    nombreUsuario: req.session.nombreUsuario,
+                    idUsuario: req.body.mail
                 })
             } else if (data.status = 500) {
                 res.redirect("/.");
@@ -115,18 +118,23 @@ router.post('/validarLogin', function (req, res) {
                 req.session.userId = obj.email;
                 req.session.permiso = data.data;
             }
-            if (data.status == 200 && data.data == 1) {
-                res.redirect('/mytickets');
-            } else if (data.status == 200 && data.data == 0) {
-                res.redirect('/validatetickets')
-            } else if (data.status == 200 && data.data == 2) {
-                res.redirect('/soporte');
-            } else {
-                res.render('login', {
-                    sLogin: data.status,
-                    nuevoUsuario: ''
-                })
+            if(md5(req.body.pass) === defaultPass){
+                res.redirect('/resetpassword');   
             }
+            else{
+                if (data.status == 200 && data.data == 1) {
+                    res.redirect('/mytickets');
+                } else if (data.status == 200 && data.data == 0) {
+                    res.redirect('/validatetickets')
+                } else if (data.status == 200 && data.data == 2) {
+                    res.redirect('/soporte');
+                } else {
+                    res.render('login', {
+                        sLogin: data.status,
+                        nuevoUsuario: ''
+                    })
+                }
+            }            
         }
     })
 })
@@ -506,5 +514,64 @@ router.post('/registrarFactura', function (req, res) {
     }
 })
 
+router.post('/restablecerPass', function(req, res){
+    if(req.session.userId === "undefined"){
+        res.redirect('/.');
+    } 
+    else{
+        obj = {
+            email: req.body.email,
+            pass: defaultPass
+        }
+        kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
+            if (typeof data === "undefined") {
+                req.session.destroy();
+                res.render('.', {
+                    servicio: false
+                })
+            }
+            else{
+                if(data.status == 200){
+                    res.redirect('/soporte');
+                }
+                else if(data.status == 500)
+                {
+                    req.session.destroy();
+                    res.redirect('/.');
+                }
+            }
+        });
+    }
+});
+
+router.post('/actualizarPass', function(req, res){
+    if(req.session.userId === "undefined"){
+        res.redirect('/.');
+    } 
+    else{
+        obj = {
+            email: req.session.userId,
+            pass: md5(req.body.pass)
+        };
+        kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
+            if (typeof data === "undefined") {
+                req.session.destroy();
+                res.render('.', {
+                    servicio: false
+                })
+            }
+            else{
+                if(data.status == 200){
+                    res.redirect('/mytickets');
+                }
+                else if(data.status == 500)
+                {
+                    req.session.destroy();
+                    res.redirect('/.');
+                }
+            }
+        });
+    }
+});
 
 module.exports = router
