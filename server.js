@@ -7,6 +7,7 @@ var express = require('express'),
     //client  = redis.createClient(),
     expressValidator = require('express-validator');
 
+var redisClient = require('./controllers/redisClient.js');
 
 var path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,7 +28,7 @@ var sessionRedis = session({
         host: 'localhost',
         port: 6379,
         //pass: 'S0l0Kur0d4#',
-        //client: client,
+        client: redisClient,
         ttl: 60 * 15
     }),
     name: "Redis",

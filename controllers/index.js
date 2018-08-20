@@ -117,24 +117,25 @@ router.post('/validarLogin', function (req, res) {
             if (data.status == 200) {
                 req.session.userId = obj.email;
                 req.session.permiso = data.data;
-            }
-            if(md5(req.body.pass) === defaultPass){
-                res.redirect('/resetpassword');   
-            }
-            else{
-                if (data.status == 200 && data.data == 1) {
-                    res.redirect('/mytickets');
-                } else if (data.status == 200 && data.data == 0) {
-                    res.redirect('/validatetickets')
-                } else if (data.status == 200 && data.data == 2) {
-                    res.redirect('/soporte');
-                } else {
-                    res.render('login', {
-                        sLogin: data.status,
-                        nuevoUsuario: ''
-                    })
+                if(md5(req.body.pass) === defaultPass){
+                    res.redirect('/resetpassword');   
                 }
-            }            
+                else{
+                    if (data.data == 1) {
+                        res.redirect('/mytickets');
+                    } else if (data.data == 0) {
+                        res.redirect('/validatetickets')
+                    } else if (data.data == 2) {
+                        res.redirect('/soporte');
+                    } 
+                }  
+            }
+            else {
+                res.render('login', {
+                    sLogin: data.status,
+                    nuevoUsuario: ''
+                })
+            }          
         }
     })
 })
@@ -520,7 +521,7 @@ router.post('/restablecerPass', function(req, res){
     } 
     else{
         obj = {
-            email: req.body.email,
+            email: req.body.emailReset,
             pass: defaultPass
         }
         kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
