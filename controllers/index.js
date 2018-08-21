@@ -131,6 +131,7 @@ router.post('/validarLogin', function (req, res) {
                 }  
             }
             else {
+                req.session.destroy();
                 res.render('login', {
                     sLogin: data.status,
                     nuevoUsuario: ''
