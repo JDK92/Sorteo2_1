@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="shortcut icon" type="image/png" href="/media/60aniv.ico">
+    <title>Total Boletos</title>
+</head>
+
+<body>
+    <nav class="black white-text">
+        <div class="nav-wrapper">
+            <div class="brand-logo left">
+                Total Boletos
+            </div>
+            <ul class="nav-mobile right">
+                <li>
+                    <a href="cerrarSesion" class="btn-small red darken-4 waves-effect waves-red hide-on-med-and-up">
+                        <i class="material-icons">
+                            close
+                        </i>
+                    </a>
+                    <a href="cerrarSesion" class="btn-small red darken-4 waves-effect waves-red hide-on-small-and-down">
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container center-align">
+            <h1>Folios generados:
+            </h1>
+            <h2 class="green-text text-darken-4">
+                
+            </h2>
+            <table class="striped responsive-table">
+                <thead>
+                    <tr>
+                        <th>Tienda</th>
+                        <th>Boletos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let i = 0; i < totalBoletos.length; i++) { %>
+                        <tr>
+                            <td>
+                                <%= totalBoletos[i].factura %>
+                            </td>
+                            <td>
+                                <%= totalBoletos[i].boleto %>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="/js/materialize.min.js"></script>
+    <script src="/js/script.js"></script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/5a7b8c5c4b401e45400cc43c/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+
+</html>

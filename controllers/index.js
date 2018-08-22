@@ -4,11 +4,41 @@ var express = require('express'),
     md5 = require('md5');
 
 var kapi = require('../models/api.js');
+var boletos = require('../public/js/boletos.js');
 var config = require('../config/config.json');
 var urlPath = `http://${config.api.dir.url}:${config.api.dir.port}/${config.api.dir.path}`;
 var defaultPass = '96add0499c6b01c0d96ed7ba94573175';
 var emailUsuario;
 var tiendas;
+
+
+/* TOTAL BOLETOS */
+router.get('/totalBoletos', function (req, res) {
+    if (req.session.userId === "undefined") {
+        res.redirect('/.');
+    }
+    else {
+        kapi.getData(`${urlPath}/Boleto/Tiendas`, function (data) {
+            if (typeof data === "undefined") {
+                req.session.destroy();
+                res.redirect('/500');
+            }
+            else {
+                if (data.status == 200) {
+                    res.render('totalBoletos', {
+                        totalBoletos: data.data,
+                        // suma: boletos.sumarBoletos()
+                    })
+                }
+                else if (data.status == 500) {
+                    req.session.destroy();
+                    res.redirect('/500');
+                }
+            }
+        });
+    }
+});
+
 
 /* RESET PASSWORD */
 router.get('/resetpassword', function (req, res) {
@@ -117,18 +147,18 @@ router.post('/validarLogin', function (req, res) {
             if (data.status == 200) {
                 req.session.userId = obj.email;
                 req.session.permiso = data.data;
-                if(md5(req.body.pass) === defaultPass){
-                    res.redirect('/resetpassword');   
+                if (md5(req.body.pass) === defaultPass) {
+                    res.redirect('/resetpassword');
                 }
-                else{
+                else {
                     if (data.data == 1) {
                         res.redirect('/mytickets');
                     } else if (data.data == 0) {
                         res.redirect('/validatetickets')
                     } else if (data.data == 2) {
                         res.redirect('/soporte');
-                    } 
-                }  
+                    }
+                }
             }
             else {
                 req.session.destroy();
@@ -136,7 +166,7 @@ router.post('/validarLogin', function (req, res) {
                     sLogin: data.status,
                     nuevoUsuario: ''
                 })
-            }          
+            }
         }
     })
 })
@@ -319,10 +349,9 @@ router.get('/mytickets', function (req, res) {
                                 req.session.destroy();
                                 res.render('/500');
                             }
-                            else { 
+                            else {
                                 console.log(req.session.objBoletosCancelados);
-                                if(typeof req.session.objBoletosCancelados === "undefined")
-                                {
+                                if (typeof req.session.objBoletosCancelados === "undefined") {
                                     req.session.objBoletosCancelados = boletosCancelados.data;
                                 }
                             }
@@ -385,7 +414,7 @@ router.get('/uploadticket', function (req, res) {
                         nombreUsuario: req.session.nombreUsuario
                     });
                 } else if (data.status == 404) {
-                    res.redirect('/myticketsmytickets');
+                    res.redirect('/mytickets');
                 }
             }
         })
@@ -516,26 +545,25 @@ router.post('/registrarFactura', function (req, res) {
     }
 })
 
-router.post('/restablecerPass', function(req, res){
-    if(req.session.userId === "undefined"){
+router.post('/restablecerPass', function (req, res) {
+    if (req.session.userId === "undefined") {
         res.redirect('/.');
-    } 
-    else{
+    }
+    else {
         obj = {
             email: req.body.emailReset,
             pass: defaultPass
         }
-        kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
+        kapi.putData(`${urlPath}/Cliente/Password`, obj, function (data) {
             if (typeof data === "undefined") {
                 req.session.destroy();
                 res.redirect('/500')
             }
-            else{
-                if(data.status == 200){
+            else {
+                if (data.status == 200) {
                     res.redirect('/soporte');
                 }
-                else if(data.status == 500)
-                {
+                else if (data.status == 500) {
                     req.session.destroy();
                     res.redirect('/500');
                 }
@@ -544,26 +572,25 @@ router.post('/restablecerPass', function(req, res){
     }
 });
 
-router.post('/actualizarPass', function(req, res){
-    if(req.session.userId === "undefined"){
+router.post('/actualizarPass', function (req, res) {
+    if (req.session.userId === "undefined") {
         res.redirect('/.');
-    } 
-    else{
+    }
+    else {
         obj = {
             email: req.session.userId,
             pass: md5(req.body.pass)
         };
-        kapi.putData(`${urlPath}/Cliente/Password`, obj, function(data){
+        kapi.putData(`${urlPath}/Cliente/Password`, obj, function (data) {
             if (typeof data === "undefined") {
                 req.session.destroy();
                 res.redirect('/500');
             }
-            else{
-                if(data.status == 200){
+            else {
+                if (data.status == 200) {
                     res.redirect('/mytickets');
                 }
-                else if(data.status == 500)
-                {
+                else if (data.status == 500) {
                     req.session.destroy();
                     res.redirect('/500');
                 }

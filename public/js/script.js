@@ -1,6 +1,7 @@
 var isValid = true;
 var captchaFilled = false;
 
+
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
