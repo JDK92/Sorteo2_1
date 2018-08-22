@@ -25,9 +25,10 @@ router.get('/totalBoletos', function (req, res) {
             }
             else {
                 if (data.status == 200) {
+                    console.log('Total de boletos: ' + boletos.sumaDeBoletos);
                     res.render('totalBoletos', {
                         totalBoletos: data.data,
-                        // suma: boletos.sumarBoletos()
+                        contador: boletos.sumarBoletos(data.data)
                     })
                 }
                 else if (data.status == 500) {
