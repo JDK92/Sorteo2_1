@@ -79,11 +79,11 @@
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Factura</label>
-                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10" onkeyup="validaDatos()">
+                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10" placeholder="Ingresa el folio de factura sin letras" onkeyup="validaDatos()">
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label># de cliente</label>
-                                                    <input type="text" name="cliente" value="<%=cliente %>" onkeyup="validaDatos()" maxlength="50">
+                                                    <input type="text" name="cliente" value="<%=cliente %>" onkeyup="validaDatos()" maxlength="50" placeholder="Número de cliente"> 
                                                 </div>
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Fecha de Compra</label>
@@ -92,7 +92,7 @@
 
                                                 <div class="input-field col s12 m6 l4">
                                                     <label>Importe</label>
-                                                    <input type="text" name="importe" value="<%=importe %>" onkeyup="validaDatos()" maxlength="50">
+                                                    <input type="text" name="importe" value="<%=importe %>" onkeyup="validaDatos()" maxlength="50" placeholder="Ingresa el importe, sin coma y con decimales">
                                                 </div>
                                                 <div class="input-field col s12 m6 l4 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k"></div>
                                             </div>
