@@ -68,34 +68,35 @@
             </div>
             <% } %>
 
-            <% if (success == 200) { %>
-                <p class="flow-text">
-                    Se ha registrado tu factura correctamente.
-                </p>
-            <% } %>
-                <% if(datos.length > 0){ %>
-
-                    <h3>
-                        Total de boletos:
-                    </h3>
-
-                    <div class="row">
-                        <div class="col s4 offset-s4  xl2 offset-xl5 red-text text-darken-2">
-                            <h2>
-                                <%= datos.length %>
-                            </h2>
-                        </div>
-
-                    </div>
-                    <p>
-                        <strong>
-                            <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
-                                Registrar factura
-                            </a>
-                        </strong>
+                <% if (authMz) { %>
+                    <p class="flow-text">
+                        Estimado cliente, gracias por registrar tu factura, validaremos la información y otorgaremos los folios que corresponden
+                        a tu compra, favor de ingresar a tu cuenta más tarde para que conozcas los números de folio participantes
                     </p>
+                    <% } %>
+                        <% if(datos.length > 0){ %>
 
-                    <h3>Mis boletos</h3>
+                            <h3>
+                                Total de boletos:
+                            </h3>
+
+                            <div class="row">
+                                <div class="col s4 offset-s4  xl2 offset-xl5 red-text text-darken-2">
+                                    <h2>
+                                        <%= datos.length %>
+                                    </h2>
+                                </div>
+
+                            </div>
+                            <p>
+                                <strong>
+                                    <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
+                                        Registrar factura
+                                    </a>
+                                </strong>
+                            </p>
+
+                            <h3>Mis boletos</h3>
                             <table class="responsive-table centered striped">
                                 <thead>
                                     <tr>
@@ -119,11 +120,12 @@
 
 
 
-                    <% } else{ %>
-                        <p class="flow-text">Todavía no tienes boletos asignados. Haz clic en el botón para registrar tu factura.
-                        </p>
-                        <a href="uploadticket" class="btn waves-effect waves-green green darken-2">Registrar factura</a>
-                        <% } %>
+                            <% } else{ %>
+                                <p class="flow-text">Todavía no tienes boletos asignados. Haz clic en el botón para registrar
+                                    tu factura.
+                                </p>
+                                <a href="uploadticket" class="btn waves-effect waves-green green darken-2">Registrar factura</a>
+                                <% } %>
 
     </main>
     <script src="/js/materialize.min.js"></script>
