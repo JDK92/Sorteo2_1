@@ -14,29 +14,33 @@ var tiendas;
 
 /* TOTAL BOLETOS */
 router.get('/totalBoletos', function (req, res) {
-    if (req.session.userId === "undefined") {
+    if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     }
     else {
-        kapi.getData(`${urlPath}/Boleto/Tiendas`, function (data) {
-            if (typeof data === "undefined") {
-                req.session.destroy();
-                res.redirect('/500');
-            }
-            else {
-                if (data.status == 200) {
-                    console.log('Total de boletos: ' + boletos.sumaDeBoletos);
-                    res.render('totalBoletos', {
-                        totalBoletos: data.data,
-                        contador: boletos.sumarBoletos(data.data)
-                    })
-                }
-                else if (data.status == 500) {
+        if(req.session.userId == 3){
+            kapi.getData(`${urlPath}/Boleto/Tiendas`, function (data) {
+                if (typeof data === "undefined") {
                     req.session.destroy();
                     res.redirect('/500');
                 }
-            }
-        });
+                else {
+                    if (data.status == 200) {
+                        console.log('Total de boletos: ' + boletos.sumaDeBoletos);
+                        res.render('totalBoletos', {
+                            totalBoletos: data.data,
+                            contador: boletos.sumarBoletos(data.data)
+                        })
+                    }
+                    else if (data.status == 500) {
+                        req.session.destroy();
+                        res.redirect('/500');
+                    }
+                }
+            });
+        } else {
+            res.redirect("/cerrarSesion");
+        }
     }
 });
 
