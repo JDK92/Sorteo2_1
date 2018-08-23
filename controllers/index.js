@@ -76,7 +76,10 @@ router.get('/soporte', function (req, res) {
                             error: '',
                             success: ''
                         })
-                    }
+                    } else if(nombreUsuario.status == 500){
+                        req.session.destroy();
+                        res.redirect('/500');
+                    }                    
                 }
             })
         } else {
@@ -86,6 +89,7 @@ router.get('/soporte', function (req, res) {
 })
 
 router.post('/encontrarCliente', function (req, res) {
+    var success = false;
     if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     } else {
@@ -94,24 +98,19 @@ router.post('/encontrarCliente', function (req, res) {
                 req.session.destroy();
                 res.redirect('/500')
             } else if (data.status == 200) {
-                res.render('soporte', {
-                    error: '',
-                    success: true,
-                    cliente: data.data,
-                    nombreUsuario: req.session.nombreUsuario,
-                    idUsuario: req.body.mail
-                })
+                success = true;
             } else if (data.status == 404) {
-                res.render('soporte', {
-                    error: 404,
-                    success: '',
-                    cliente: data.data,
-                    nombreUsuario: req.session.nombreUsuario,
-                    idUsuario: req.body.mail
-                })
+                success = '';
             } else if (data.status = 500) {
                 res.redirect("/.");
             }
+            res.render('soporte', {
+                error: '',
+                success: success,
+                cliente: data.data,
+                nombreUsuario: req.session.nombreUsuario,
+                idUsuario: req.body.mail
+            })
         })
     }
 })
@@ -158,6 +157,8 @@ router.post('/validarLogin', function (req, res) {
                         res.redirect('/validatetickets')
                     } else if (data.data == 2) {
                         res.redirect('/soporte');
+                    } else if (data.data == 3) {
+                        res.redirect('/totalBoletos');
                     }
                 }
             }
@@ -184,6 +185,7 @@ router.get('/cerrarSesion', function (req, res) {
 
 /* ADMIN PARA VALIDAR FACTURAS FUERAS DE SAP */
 router.get('/validatetickets', function (req, res) {
+    var infoPorValidar = [];
     if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     } else {
@@ -193,19 +195,16 @@ router.get('/validatetickets', function (req, res) {
                     req.session.destroy();
                     res.render('/500')
                 } else {
-                    if (data.status == 404) {
-                        res.render('validatetickets', {
-                            tickets: [],
-                            nombreUsuario: req.session.nombreUsuario
-                        })
-                    } else if (data.status == 200) {
-                        res.render('validatetickets', {
-                            tickets: data.data,
-                            nombreUsuario: req.session.nombreUsuario
-                        })
+                    if (data.status == 200) {
+                        infoPorValidar =  data.data;
                     } else if (data.status == 500) {
-                        res.redirect('/.')
+                        req.session.destroy();
+                        res.redirect('/500');
                     }
+                    res.render('validatetickets', {
+                        tickets: infoPorValidar,
+                        nombreUsuario: req.session.nombreUsuario
+                    })
                 }
             })
         } else {
@@ -246,7 +245,8 @@ router.post('/validarFactura', function (req, res) {
                         res.redirect('/validatetickets');
                     }
                     else if (data.status == 500) {
-
+                        req.session.destroy();
+                        res.redirect('/500');
                     }
                 }
             });
@@ -322,6 +322,9 @@ router.post('/registrarCliente', function (req, res) {
                         servicio: true,
                         errors: ''
                     });
+                } else if(data.status == 500){
+                    req.session.destroy();
+                    res.redirect('/500');
                 }
             }
         })
@@ -331,6 +334,7 @@ router.post('/registrarCliente', function (req, res) {
 /* FACTURA Y REGISTRO DE FACTURAS DEL CLIENTE */
 
 router.get('/mytickets', function (req, res) {
+    var datosBoletos = [];
     if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     } else {
@@ -351,7 +355,6 @@ router.get('/mytickets', function (req, res) {
                                 res.render('/500');
                             }
                             else {
-                                console.log(req.session.objBoletosCancelados);
                                 if (typeof req.session.objBoletosCancelados === "undefined") {
                                     req.session.objBoletosCancelados = boletosCancelados.data;
                                 }
@@ -365,22 +368,20 @@ router.get('/mytickets', function (req, res) {
                                     res.redirect('/500');
                                 } else {
                                     if (data.status == 200) {
-                                        res.render('mytickets', {
-                                            success: '',
-                                            datos: data.data,
-                                            nombreUsuario: req.session.nombreUsuario,
-                                            cancelados: req.session.objBoletosCancelados
-                                        })
-                                    } else {
-                                        res.render('mytickets', {
-                                            success: '',
-                                            datos: [],
-                                            nombreUsuario: req.session.nombreUsuario,
-                                            cancelados: req.session.objBoletosCancelados
-                                        })
-                                    }
+                                        datosBoletos = data.data;
+                                    } 
+                                    res.render('mytickets', {
+                                        success: '',
+                                        datos: datosBoletos,
+                                        nombreUsuario: req.session.nombreUsuario,
+                                        cancelados: req.session.objBoletosCancelados,
+                                        authMz: req.session.authMz
+                                    });                                    
                                 }
                             })
+                        } else if (nombreUsuario.status == 500){
+                            req.session.destroy();
+                            res.redirect('/500');
                         }
                     })
                 }
@@ -401,6 +402,7 @@ router.get('/uploadticket', function (req, res) {
                 res.render('/500');
             } else {
                 if (data.status == 200) {
+                    req.session.authMz = false;
                     req.session.tiendas = data.data;
                     res.render('uploadticket', {
                         error: 0,
@@ -416,6 +418,9 @@ router.get('/uploadticket', function (req, res) {
                     });
                 } else if (data.status == 404) {
                     res.redirect('/mytickets');
+                } else if (data.status == 500){
+                    req.session.destroy();
+                    res.redirect('/500');
                 }
             }
         })
@@ -424,7 +429,7 @@ router.get('/uploadticket', function (req, res) {
 
 router.post('/registrarFactura', function (req, res) {
     var metodo;
-    var obj;
+    var obj, iError, iFactura = '', sCliente = '', iImporte = '', dFecha = '', sTienda = '';
     req.check('factura', 'Debes ingresar sólo números en factura').matches(/^\d{1,45}$/);
     req.check('cliente', 'Debes ingresar sólo números # de cliente').matches(/^\d{1,45}$/);
     req.check('importe', 'Debes ingresar sólo números en importe').matches(/^[0-9]+(\.[0-9]{1,2})?$/);
@@ -492,52 +497,36 @@ router.post('/registrarFactura', function (req, res) {
                             })
                         } else {
                             if (data.status == 200) {
-                                res.redirect('/mytickets');
-
+                                if (data.status == 200) {
+                                    if (req.body.tiendaPicked.includes("MZ")){
+                                        req.session.authMz = true;
+                                    } 
+                                    res.redirect('/mytickets');
+                                }
                             } else if (data.status == 400) {
-                                console.log("Error 400");
-                                res.render('uploadticket', {
-                                    error: 400,
-                                    obj: {},
-                                    servicio: true,
-                                    errors: '',
-                                    nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: req.session.tiendas,
-                                    factura: '',
-                                    cliente: '',
-                                    importe: '',
-                                    nombreTienda: '',
-                                    fecha: ''
-                                })
+                                iError = 400;
                             } else if (data.status == 404) {
-                                console.log("Error 404");
-                                res.render('uploadticket', {
-                                    error: 404,
-                                    factura: obj.factura,
-                                    cliente: obj.cliente,
-                                    importe: obj.importe,
-                                    fecha: obj.fecha,
-                                    nombreTienda: obj.idTienda,
-                                    servicio: true,
-                                    errors: '',
-                                    nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: req.session.tiendas
-                                });
+                                iError = 404;
+                                iFactura = req.body.factura;
+                                sCliente = req.body.cliente;
+                                iImporte = req.body.importe;
+                                dFecha = req.body.fecha.split('/').reverse().join('');
+                                sTienda = req.body.tiendaPicked;
                             } else if (data.status == 500) {
-                                console.log("Error 500");
-                                res.redirect('/uploadticket', {
-                                    error: 500,
-                                    factura: obj.factura,
-                                    cliente: obj.cliente,
-                                    importe: obj.importe,
-                                    fecha: obj.fecha,
-                                    nombreTienda: obj.idTienda,
-                                    servicio: true,
-                                    errors: '',
-                                    nombreUsuario: req.session.nombreUsuario,
-                                    tiendas: req.session.tiendas
-                                });
+                                req.session.destroy();
+                                res.redirect('/500');
                             }
+                            res.render('uploadticket', {
+                                error: iError,
+                                errors: '',
+                                nombreUsuario: req.session.nombreUsuario,
+                                tiendas: req.session.tiendas,
+                                factura: iFactura,
+                                cliente: sCliente,
+                                importe: iImporte,
+                                nombreTienda: sTienda,
+                                fecha: dFecha
+                            })
                         }
                     })
                 }
