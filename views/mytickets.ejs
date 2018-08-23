@@ -70,62 +70,57 @@
 
                 <% if (authMz) { %>
                     <p class="flow-text">
-                        Estimado cliente, gracias por registrar tu factura, validaremos la información y otorgaremos los folios que corresponden
-                        a tu compra, favor de ingresar a tu cuenta más tarde para que conozcas los números de folio participantes
+                        ¡Gracias por registrar tu factura! Validaremos la información y otorgaremos los folios que corresponden a tu compra. Regresa
+                        más tarde para ver tus folios participantes.
                     </p>
                     <% } %>
-                        <% if(datos.length > 0){ %>
 
-                            <h3>
-                                Total de boletos:
-                            </h3>
+                        <h3>
+                            Total de boletos:
+                        </h3>
 
-                            <div class="row">
-                                <div class="col s4 offset-s4  xl2 offset-xl5 red-text text-darken-2">
-                                    <h2>
+                        <div class="row">
+                            <div class="col s4 offset-s4  xl2 offset-xl5">
+                                <% if (datos.length > 0) { %>
+                                    <h2 class="green-text text-darken-4">
                                         <%= datos.length %>
                                     </h2>
-                                </div>
-
-                            </div>
-                            <p>
-                                <strong>
-                                    <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
-                                        Registrar factura
-                                    </a>
-                                </strong>
-                            </p>
-
-                            <h3>Mis boletos</h3>
-                            <table class="responsive-table centered striped">
-                                <thead>
-                                    <tr>
-                                        <th>Factura</th>
-                                        <th>Folio boleto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for (var i = 0; i < datos.length; i++) { %>
-                                        <tr>
-                                            <td>
-                                                <%= datos[i].factura %>
-                                            </td>
-                                            <td>
-                                                <%= datos[i].boleto %>
-                                            </td>
-                                        </tr>
+                                    <% } else { %>
+                                        <h2 class="red-text text-darken-2">
+                                            <%= datos.length %>
+                                        </h2>
                                         <% } %>
-                                </tbody>
-                            </table>
+                            </div>
+                        </div>
+                        <p>
+                            <strong>
+                                <a href="uploadticket" class="btn-large waves-effect waves-green green darken-2">
+                                    Registrar factura
+                                </a>
+                            </strong>
+                        </p>
 
-
-
-                            <% } else{ %>
-                                <p class="flow-text">Todavía no tienes boletos asignados. Haz clic en el botón para registrar
-                                    tu factura.
-                                </p>
-                                <a href="uploadticket" class="btn waves-effect waves-green green darken-2">Registrar factura</a>
-                                <% } %>
+                        <h3>Mis boletos</h3>
+                        <table class="responsive-table centered striped">
+                            <thead>
+                                <tr>
+                                    <th>Factura</th>
+                                    <th>Folio boleto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (var i = 0; i < datos.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <%= datos[i].factura %>
+                                        </td>
+                                        <td>
+                                            <%= datos[i].boleto %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
 
     </main>
     <script src="/js/materialize.min.js"></script>

@@ -36,11 +36,8 @@
 
     <main class="container">
         <h1 class="red-text text-darken-4">Registro de factura</h1>
-        <% if (!servicio) {%>
-            <h4 class="red-text text-darken-4">
-                Ocurrió un error. Intenta más tarde.
-            </h4>
-            <% }%>
+        
+    
                 <% if(errors){ %>
                     <ul>
                         <% errors.forEach(function( err){ %>
