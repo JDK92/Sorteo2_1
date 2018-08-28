@@ -18,7 +18,7 @@ router.get('/totalBoletos', function (req, res) {
         res.redirect('/.');
     }
     else {
-        if(req.session.userId == 3){
+        if(req.session.permiso == 3){
             kapi.getData(`${urlPath}/Boleto/Tiendas`, function (data) {
                 if (typeof data === "undefined") {
                     req.session.destroy();
@@ -27,7 +27,7 @@ router.get('/totalBoletos', function (req, res) {
                 else {
                     if (data.status == 200) {
                         console.log('Total de boletos: ' + boletos.sumaDeBoletos);
-                        res.render('totalBoletos', {
+                        res.render('totalboletos', {
                             totalBoletos: data.data,
                             contador: boletos.sumarBoletos(data.data)
                         })
@@ -151,6 +151,7 @@ router.post('/validarLogin', function (req, res) {
             if (data.status == 200) {
                 req.session.userId = obj.email;
                 req.session.permiso = data.data;
+                req.session.authMz = false;
                 if (md5(req.body.pass) === defaultPass) {
                     res.redirect('/resetpassword');
                 }
