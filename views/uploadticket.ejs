@@ -35,82 +35,103 @@
     </nav>
 
     <main class="container">
-        <h1 class="red-text text-darken-4">Registro de factura</h1>
-        
-    
-                <% if(errors){ %>
-                    <ul>
-                        <% errors.forEach(function( err){ %>
-                            <li class="red-text text-darken-3">
-                                <%= err.msg %>
-                            </li>
-                            <% }) %>
-                    </ul>
-                    <%}%>
 
-                        <% if (error == 400) { %>
-                            <p class="flow-text red-text text-darken-4">
-                                Esta factura ya fue utilizada
-                            </p>
-                            <% } else if (error == 404) { %>
-                                <p class="flow-text red-text text-darken-4">
-                                    No se encontró factura. Revisa la información e intenta de nuevo.
-                                </p>
-                                <% } else if (error == 500) { %>
-                                    <p class="flow-text red-text text-darken-4">
-                                        Error interno del servidor. Vuelve a intentar.
-                                    </p>
-                                    <% } %>
-                                        <form method="post" action="registrarFactura">
-                                            <div class="row">
-                                                <div class="input-field col s12 m6 l4">
+        <h1 class="green-text text-darken-4">Registro de factura</h1>
 
-                                                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default" onchange="validaDatos()">
-                                                        <option value="" disabled selected>Selecciona una sucursal</option>
-                                                        <% for (var i = 0; i < tiendas.length; i++) { %>
-                                                            <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
-                                                                <%= tiendas[i].nombreTienda %>
-                                                            </option>
-                                                            <%  }%>
-                                                    </select>
-                                                </div>
-                                                <div class="input-field col s12 m6 l4">
-                                                    <label>Factura</label>
-                                                    <input type="text" name="factura" value="<%=factura %>" maxlength="10" placeholder="Ingresa el folio de factura sin letras" onkeyup="validaDatos()">
-                                                </div>
-                                                <div class="input-field col s12 m6 l4">
-                                                    <label># de cliente</label>
-                                                    <input type="text" name="cliente" value="<%=cliente %>" onkeyup="validaDatos()" maxlength="50" placeholder="Número de cliente"> 
-                                                </div>
-                                                <div class="input-field col s12 m6 l4">
-                                                    <label>Fecha de Compra</label>
-                                                    <input type="text" name="fecha" class="datepicker" value="<%=fecha %>" onchange="validaDatos()" maxlength="50">
-                                                </div>
+        <div id="help" class="modal">
+            <div class="modal-content">
+                <img src="/media/ejemploFactura.png" alt="Ejemplo de factura" class="responsive-img">
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-close btn black">Entiendo</a>
+            </div>
+        </div>
+        <% if(errors){ %>
+        <ul>
+            <% errors.forEach(function( err){ %>
+            <li class="red-text text-darken-3">
+                <%= err.msg %>
+            </li>
+            <% }) %>
+        </ul>
+        <%}%>
 
-                                                <div class="input-field col s12 m6 l4">
-                                                    <label>Importe</label>
-                                                    <input type="text" name="importe" value="<%=importe %>" onkeyup="validaDatos()" maxlength="50" placeholder="Ingresa el importe, sin coma y con decimales">
-                                                </div>
-                                                <div class="input-field col s12 m6 l4 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired" data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k"></div>
-                                            </div>
-                                            <div class="input-field center-align">
-                                                <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit" disabled>Enviar</button>
-                                            </div>
-                                        </form>
-                                        <a href="mytickets">
-                                            Regresar
-                                        </a>
+        <% if (error == 400) { %>
+        <p class="flow-text red-text text-darken-4">
+            Esta factura ya fue utilizada
+        </p>
+        <% } else if (error == 404) { %>
+        <p class="flow-text red-text text-darken-4">
+            No se encontró factura. Revisa la información e intenta de nuevo.
+        </p>
+        <% } else if (error == 500) { %>
+        <p class="flow-text red-text text-darken-4">
+            Error interno del servidor. Vuelve a intentar.
+        </p>
+        <% } %>
+
+        <form method="post" action="registrarFactura">
+            <div class="row">
+                <div class="input-field col s12 m6 l4">
+                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default" onchange="validaDatos()">
+                        <option value="" disabled selected>Selecciona una sucursal</option>
+                        <% for (var i = 0; i < tiendas.length; i++) { %>
+                        <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">
+                            <%= tiendas[i].nombreTienda %>
+                        </option>
+                        <%  }%>
+                    </select>
+                </div>
+
+                <div class="input-field col s12 m6 l4">
+                    <label>Factura</label>
+                    <input type="text" name="factura" value="<%=factura %>" maxlength="10" placeholder="Ingresa el folio de factura sin letras"
+                        onkeyup="validaDatos()">
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <label># de cliente</label>
+                    <input type="text" name="cliente" value="<%=cliente %>" onkeyup="validaDatos()" maxlength="50"
+                        placeholder="Número de cliente">
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <label>Fecha de Compra</label>
+                    <input type="text" name="fecha" class="datepicker" value="<%=fecha %>" onchange="validaDatos()"
+                        maxlength="50">
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <label>Importe</label>
+                    <input type="text" name="importe" value="<%=importe %>" onkeyup="validaDatos()" maxlength="50"
+                        placeholder="Ingresa el importe, sin coma y con decimales">
+                </div>
+                <div class="input-field col s12 m6 l4 g-recaptcha" data-callback="capcha_filled" data-expired-callback="capcha_expired"
+                    data-sitekey="6LeRx2cUAAAAAGSHuIg6IjtfFR2zGnHrsnkYhe7k"></div>
+            </div>
+            <div class="input-field center-align">
+                <button class="btn waves-effect waves-green green darken-2" type="submit" name="action" id="submit"
+                    disabled>Enviar</button>
+                <p>
+                    <strong><a href="#help" class="modal-trigger">Ayuda</a></strong>
+                </p>
+            </div>
+        </form>
+
+        <a href="mytickets" class="btn waves-effect waves-light white black-text z-depth-0">
+           <i class="material-icons left">chevron_left</i> Regresar
+        </a>
     </main>
 
     <script src="/js/materialize.min.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/script.js"></script>
+    <script src="/js/modal.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
         (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
             s1.src = 'https://embed.tawk.to/5a7b8c5c4b401e45400cc43c/default';
             s1.charset = 'UTF-8';
