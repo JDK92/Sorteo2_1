@@ -46,18 +46,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (let i = 0; i < totalBoletos.length; i++) { %>
+                    <% for (var i = 0; i < totalBoletos.length; i++) { %>
+                    <tr>
+                        <% if (totalBoletos[i].id_tienda.match(/MZ/i)) { %>
 
-                        <tr>
-                            <td>
-                                <%= totalBoletos[i].nombreSucursal %>
-                            </td>
-                            <td>
-                                <%= totalBoletos[i].boletos %>
-                            </td>
-                        </tr>
+                        <td>
+                            <%= totalBoletos[i].nombreSucursal %>
+                        </td>
+                        <td>
+                            <%= totalBoletos[i].boletos %>
+                        </td>
+                        <td class="center-align">
+                            <a href="#detalles<%=i%>" class="waves-effect waves-orange btn orange modal-trigger">Detalles</a>
+                        </td>
+                        <div id="detalles<%=i%>" class="modal">
+                            <div class="modal-content">
+                                <% for (var j = 0; j < boletosMZ.length; j++) { %>
+                                    <% if (boletosMZ[j].id_tienda == totalBoletos[i].id_tienda) { %>
+                                        <div class="section">
+                                    <ul>
+                                        <li>
+                                            <strong>Factura: </strong><%= boletosMZ[j].factura %>
+                                        </li>
+                                        <li>
+                                            <strong>Boletos generados: </strong><%= boletosMZ[j].boletos %>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="divider"></div>
+                                    <% } %>
+                                <% } %>
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">ACEPTAR</a>
+                            </div>
+                        </div>
+                        <% }  else { %>
+                        <td>
+                            <%= totalBoletos[i].nombreSucursal %>
+                        </td>
+                        <td>
+                            <%= totalBoletos[i].boletos %>
+                        </td>
+                    </tr>
+                    <% } %>
 
-                        <% } %>
+
+                    <% } %>
                 </tbody>
             </table>
         </div>
@@ -66,6 +102,8 @@
     <script src="/js/materialize.min.js"></script>
 
     <script src="/js/boletos.js"></script>
+
+    <script src="/js/modal.js"></script>
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
         var Tawk_API = Tawk_API || {},

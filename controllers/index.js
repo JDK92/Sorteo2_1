@@ -28,7 +28,7 @@ router.get('/totalBoletos', function (req, res) {
                         res.render('totalboletos', {
                             totalBoletos: data.data.boletos,
                             contador: boletos.sumarBoletos(data.data.boletos), 
-                            boletosMZA: data.data.boletosMZ
+                            boletosMZ: data.data.boletosMZ
                         })
                     } else if (data.status == 500) {
                         req.session.destroy();

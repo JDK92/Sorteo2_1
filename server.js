@@ -30,6 +30,7 @@ var sessionRedis = session({
         //pass: 'S0l0Kur0d4#',
         client: redisClient,
         ttl: 60 * 15
+        
     }),
     name: "Redis",
     secret: "pruebaRedis",
