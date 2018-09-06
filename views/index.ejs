@@ -2,6 +2,13 @@
 <html lang="en">
 
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5KMQD4B');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -14,6 +21,11 @@
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5KMQD4B"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
     <nav class="black hide-on-small-and-down">
         <div class="nav-wrapper">
             <form method="post" action="validarLogin">
@@ -45,72 +57,74 @@
     </nav>
     <main class="container">
         <% if (!servicio) {%>
-            <h4 class="red-text text-darken-4">
-                Ocurrió un error. Intenta más tarde.
-            </h4>
-            <% }%>
+        <h4 class="red-text text-darken-4">
+            Ocurrió un error. Intenta más tarde.
+        </h4>
+        <% }%>
 
 
 
 
 
 
-                <div class="fullscreen">
-                    <div class="row">
-                        <div class="col s10 offset-s1 m6 offset-m3 l6 offset-l3 xl5 center-align">
-                            <p>
-                                El primer sorteo empieza en:
-                                <span id="countdown" class="countdown"></span>
-                            </p>
-                            <div class="awards">
-                                <div>
-                                    <img src="/media/ca1.png" alt="" class="responsive-img">
-                                </div>
-                                <div>
-                                    <img src="/media/ca2.png" alt="" class="responsive-img">
-                                </div>
-                                <div>
-                                    <img src="/media/ca3.png" alt="" class="responsive-img">
-                                </div>
-                                <div>
-                                    <img src="/media/ca4.png" alt="" class="responsive-img">
-                                </div>
-                                <div>
-                                    <img src="/media/ca5.png" alt="" class="responsive-img">
-                                </div>
-                                <div>
-                                    <img src="/media/ca6.png" alt="" class="responsive-img">
-                                </div>
-                            </div>
-
+        <div class="fullscreen">
+            <div class="row">
+                <div class="col s10 offset-s1 m6 offset-m3 l6 offset-l3 xl5 center-align">
+                    <p>
+                        El primer sorteo empieza en:
+                        <span id="countdown" class="countdown"></span>
+                    </p>
+                    <div class="awards">
+                        <div>
+                            <img src="/media/ca1.png" alt="" class="responsive-img">
                         </div>
-                        <div class="col s12 m10 offset-m1 l8 offset-l2 xl4 offset-xl3 center-align">
-
-                            <h4>
-                                ¡Ven y participa!
-                            </h4>
-                            <p class="flow-text">
-                                Obtén
-                                <strong>un</strong> boleto por cada $1,000 de compra y entrarás al sorteo de aniversario en el que
-                                podrás ganar
-                                <span class="red-text text-darken-4">
-                                    <strong>GRANDES PREMIOS</strong>
-                                </span>
-                            </p>
-                            <strong>
-                                <a href="register" class="btn-large waves-effect waves-green green darken-2 ">REGÍSTRATE HOY MISMO</a>
-                            </strong>
-                            <p class="hide-on-med-and-up">
-                                <a href="login" class="btn waves-effect waves-red red darken-3 white-text ">Iniciar sesión</a>
-                            </p>
-                            <p>
-                                <a href="https://kuroda.com/terminos.html" target="_blank">Términos y condiciones del sorteo</a>
-                            </p>
-
+                        <div>
+                            <img src="/media/ca2.png" alt="" class="responsive-img">
+                        </div>
+                        <div>
+                            <img src="/media/ca3.png" alt="" class="responsive-img">
+                        </div>
+                        <div>
+                            <img src="/media/ca4.png" alt="" class="responsive-img">
+                        </div>
+                        <div>
+                            <img src="/media/ca5.png" alt="" class="responsive-img">
+                        </div>
+                        <div>
+                            <img src="/media/ca6.png" alt="" class="responsive-img">
                         </div>
                     </div>
 
                 </div>
+                <div class="col s12 m10 offset-m1 l8 offset-l2 xl4 offset-xl3 center-align">
+
+                    <h4>
+                        ¡Ven y participa!
+                    </h4>
+                    <p class="flow-text">
+                        Obtén
+                        <strong>un</strong> boleto por cada $1,000 de compra y entrarás al sorteo de aniversario en el
+                        que
+                        podrás ganar
+                        <span class="red-text text-darken-4">
+                            <strong>GRANDES PREMIOS</strong>
+                        </span>
+                    </p>
+                    <strong>
+                        <a href="register" class="btn-large waves-effect waves-green green darken-2 ">REGÍSTRATE HOY
+                            MISMO</a>
+                    </strong>
+                    <p class="hide-on-med-and-up">
+                        <a href="login" class="btn waves-effect waves-red red darken-3 white-text ">Iniciar sesión</a>
+                    </p>
+                    <p>
+                        <a href="https://kuroda.com/terminos.html" target="_blank">Términos y condiciones del sorteo</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
 
     </main>
     <canvas id="confetti-holder" class="confetti"></canvas>
@@ -124,13 +138,15 @@
     <script src="/js/carousel.js"></script>
     <script src="/js/script.js"></script>
     <script src="/js/countdown.js"></script>
-    
+
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
         (function () {
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
             s1.async = true;
             s1.src = 'https://embed.tawk.to/5a7b8c5c4b401e45400cc43c/default';
             s1.charset = 'UTF-8';
