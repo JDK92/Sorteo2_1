@@ -276,7 +276,11 @@ router.post('/registrarCliente', function (req, res) {
 
     req.check('numTelefono', 'El teléfono debe incluir sólo números').matches(/^\d{1,10}$/);
 
+    req.check('numTelefono', 'El teléfono debe de ser de 10 dígitos. Incluye la LADA, por favor.').matches(/^.{,10}$/);
+
     req.check('numCelular', 'El celular debe incluir sólo números').matches(/^\d{1,10}$/);
+
+    req.check('numCelular', 'El celular debe de ser de 10 dígitos. Incluye la LADA, por favor').matches(/^.{,10}$/);
 
 
     var errors = req.validationErrors();
