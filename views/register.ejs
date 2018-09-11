@@ -24,8 +24,8 @@
         <% if(errors){ %>
         <ul>
             <% errors.forEach(function( err){ %>
-            <li>
-                <%= err.msg %>
+            <li class="red-text text-darken-4">
+                <strong><%= err.msg %></strong>
             </li>
             <% }) %>
         </ul>
