@@ -73,7 +73,8 @@ function validaRegistro() {
         if ($(this).val() === '' || ($('#password').val() != $('#confirmPassword').val()))
             isValid = false;
     });
-
+    if ($("#idEstado").val() === null)
+        isValid = false;
     habilitarRegistro();
 };
 

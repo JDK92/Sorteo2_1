@@ -73,7 +73,7 @@
         <form method="post" action="registrarFactura">
             <div class="row">
                 <div class="input-field col s12 m6 l4">
-                    <select name="tiendaPicked" value="<%=nombreTienda%>" class="browser-default" onchange="validaDatos()">
+                    <select name="tiendaPicked" id="idSucursal" class="browser-default" onchange="validaDatos()">
                         <option value="" disabled selected>Selecciona una sucursal</option>
                         <% for (var i = 0; i < tiendas.length; i++) { %>
                         <option value="<%= tiendas[i].idTienda %>" name="<%= tiendas[i].idTienda %>">

@@ -8,8 +8,7 @@ var boletos = require('../public/js/boletos.js');
 var config = require('../config/config.json');
 var urlPath = `http://${config.api.dir.url}:${config.api.dir.port}/${config.api.dir.path}`;
 var defaultPass = '96add0499c6b01c0d96ed7ba94573175';
-var emailUsuario;
-var tiendas;
+var estados;
 
 
 /* TOTAL BOLETOS */
@@ -27,7 +26,7 @@ router.get('/totalBoletos', function (req, res) {
                         console.log('Total de boletos: ' + boletos.sumaDeBoletos);
                         res.render('totalboletos', {
                             totalBoletos: data.data.boletos,
-                            contador: boletos.sumarBoletos(data.data.boletos), 
+                            contador: boletos.sumarBoletos(data.data.boletos),
                             boletosMZ: data.data.boletosMZ
                         })
                     } else if (data.status == 500) {
@@ -254,10 +253,14 @@ router.post('/validarFactura', function (req, res) {
 
 /* REGISTRO DE NUEVOS USUARIOS*/
 router.get('/register', function (req, res) {
-    res.render('register', {
-        servicio: true,
-        errors: null,
-        usuarioRegistrado: ''
+    kapi.getData(`${urlPath}/Informacion/Estados`, function (data) {
+       estados = data.data;
+        res.render('register', {
+            servicio: true,
+            errors: null,
+            estado: estados,
+            usuarioRegistrado: ''
+        })
     })
 })
 
@@ -270,17 +273,15 @@ router.post('/registrarCliente', function (req, res) {
 
     req.check('nomCiudad', 'La ciudad debe de incluir sólo texto').matches(/^([^0-9]*)$/);
 
-    req.check('nomEstado', 'El estado debe de incluir sólo texto').matches(/^([^0-9]*)$/);
-
     req.check('codigoPostal', 'El código postal debe incluir sólo números').matches(/^\d{1,6}$/);
 
     req.check('numTelefono', 'El teléfono debe incluir sólo números').matches(/^\d{1,10}$/);
 
-    req.check('numTelefono', 'El teléfono debe de ser de 10 dígitos. Incluye la LADA, por favor.').matches(/^.{,10}$/);
+    // req.check('numTelefono', 'El teléfono debe de ser de 10 dígitos. Incluye la LADA, por favor.').matches(/^.{,10}$/);
 
     req.check('numCelular', 'El celular debe incluir sólo números').matches(/^\d{1,10}$/);
 
-    req.check('numCelular', 'El celular debe de ser de 10 dígitos. Incluye la LADA, por favor').matches(/^.{,10}$/);
+    // req.check('numCelular', 'El celular debe de ser de 10 dígitos. Incluye la LADA, por favor').matches(/^.{,10}$/);
 
 
     var errors = req.validationErrors();
@@ -288,7 +289,9 @@ router.post('/registrarCliente', function (req, res) {
         res.render('register', {
             servicio: true,
             errors: errors,
-            usuarioRegistrado: ''
+            usuarioRegistrado: '',
+            estado: estados
+            
         });
     } else {
         var obj = {
@@ -301,7 +304,7 @@ router.post('/registrarCliente', function (req, res) {
             nomColonia: req.body.nomColonia,
             codigoPostal: req.body.codigoPostal,
             nomCiudad: req.body.nomCiudad,
-            nomEstado: req.body.nomEstado,
+            nomEstado: req.body.estadoPicked,
             numTelefono: req.body.numTelefono,
             numCelular: req.body.numCelular,
             email: req.body.email,
@@ -321,7 +324,8 @@ router.post('/registrarCliente', function (req, res) {
                     res.render('register', {
                         usuarioRegistrado: true,
                         servicio: true,
-                        errors: ''
+                        errors: '',
+                        estado: estados
                     });
                 } else if (data.status == 500) {
                     req.session.destroy();
