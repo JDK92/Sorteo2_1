@@ -23,7 +23,7 @@ router.get('/totalBoletos', function (req, res) {
                     res.redirect('/500');
                 } else {
                     if (data.status == 200) {
-                        console.log('Total de boletos: ' + boletos.sumaDeBoletos);
+
                         res.render('totalboletos', {
                             totalBoletos: data.data.boletos,
                             contador: boletos.sumarBoletos(data.data.boletos),
@@ -254,7 +254,7 @@ router.post('/validarFactura', function (req, res) {
 /* REGISTRO DE NUEVOS USUARIOS*/
 router.get('/register', function (req, res) {
     kapi.getData(`${urlPath}/Informacion/Estados`, function (data) {
-       estados = data.data;
+        estados = data.data;
         res.render('register', {
             servicio: true,
             errors: null,
@@ -287,7 +287,7 @@ router.post('/registrarCliente', function (req, res) {
             errors: errors,
             usuarioRegistrado: '',
             estado: estados
-            
+
         });
     } else {
         var obj = {
@@ -396,34 +396,39 @@ router.get('/uploadticket', function (req, res) {
     if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     } else {
-        kapi.getData(`${urlPath}/Tiendas/Catalogo`, function (data) {
-            if (typeof data === "undefined") {
-                req.session.destroy();
-                res.render('/500');
-            } else {
-                if (data.status == 200) {
-                    req.session.authMz = false;
-                    req.session.tiendas = data.data;
-                    res.render('uploadticket', {
-                        error: 0,
-                        errors: '',
-                        tiendas: req.session.tiendas,
-                        factura: '',
-                        cliente: '',
-                        fecha: '',
-                        importe: '',
-                        nombreTienda: '',
-                        servicio: true,
-                        nombreUsuario: req.session.nombreUsuario
-                    });
-                } else if (data.status == 404) {
-                    res.redirect('/mytickets');
-                } else if (data.status == 500) {
+        if (req.session.userId.match(/@kuroda.com/gmi)) {
+            console.log(req.session.id);
+            res.redirect('/mytickets');
+        } else {
+            kapi.getData(`${urlPath}/Tiendas/Catalogo`, function (data) {
+                if (typeof data === "undefined") {
                     req.session.destroy();
-                    res.redirect('/500');
+                    res.render('/500');
+                } else {
+                    if (data.status == 200) {
+                        req.session.authMz = false;
+                        req.session.tiendas = data.data;
+                        res.render('uploadticket', {
+                            error: 0,
+                            errors: '',
+                            tiendas: req.session.tiendas,
+                            factura: '',
+                            cliente: '',
+                            fecha: '',
+                            importe: '',
+                            nombreTienda: '',
+                            servicio: true,
+                            nombreUsuario: req.session.nombreUsuario,
+                        });
+                    } else if (data.status == 404) {
+                        res.redirect('/mytickets');
+                    } else if (data.status == 500) {
+                        req.session.destroy();
+                        res.redirect('/500');
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 })
 
