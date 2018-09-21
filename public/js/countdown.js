@@ -1,5 +1,5 @@
 // Set the date we're counting down to
-var countDownDate = new Date("Sep 21, 2018 12:00:00").getTime();
+var countDownDate = new Date("Sep 21, 2018 10:00:00").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -23,6 +23,6 @@ var x = setInterval(function() {
     // If the count down is finished, write some text 
     if (distance < 0) {
         clearInterval(x);
-        document.getElementById("countdown").innerHTML = "EXPIRED";
+        document.getElementById("countdown").innerHTML = "HOY ES EL PRIMER SORTEO";
     }
 }, 1000);
