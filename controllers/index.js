@@ -186,6 +186,7 @@ router.get('/cerrarSesion', function (req, res) {
 /* ADMIN PARA VALIDAR FACTURAS FUERAS DE SAP */
 router.get('/validatetickets', function (req, res) {
     var infoPorValidar = [];
+    var relacionFacturas = [];
     if (typeof req.session.userId === "undefined") {
         res.redirect('/.');
     } else {
@@ -201,16 +202,29 @@ router.get('/validatetickets', function (req, res) {
                         req.session.destroy();
                         res.redirect('/500');
                     }
-                    res.render('validatetickets', {
-                        tickets: infoPorValidar,
-                        nombreUsuario: req.session.nombreUsuario
+                    kapi.getData(`${urlPath}/Informacion/BoletosMZ`, function (facturas) {
+                        if (typeof facturas === "undefined") {
+                            req.session.destroy();
+                            res.render('/500')
+                        } else {
+                            if (facturas.status == 200) {
+                                relacionFacturas = facturas.data;
+                            } else if (facturas.status == 500) {
+                                req.session.destroy();
+                                res.redirect('/500');
+                            }
+                        }
+                        res.render('validatetickets', {
+                            tickets: infoPorValidar,
+                            facturas: relacionFacturas,
+                            nombreUsuario: req.session.nombreUsuario,
+                        })
                     })
                 }
             })
         } else {
             res.redirect("/cerrarSesion");
         }
-
     }
 })
 
@@ -229,7 +243,9 @@ router.post('/validarFactura', function (req, res) {
                 boletosAutorizados: 0,
                 importeAutorizado: 0,
                 usuarioAutorizo: req.session.userId,
-                opcion: Number(req.body.accion)
+                opcion: Number(req.body.accion),
+                idKeyx: req.body.idKeyx,
+                observaciones: req.body.observaciones
             };
             kapi.putData(`${urlPath}/Cliente/Boleto/Auth`, obj, function (data) {
                 if (typeof data === "undefined") {

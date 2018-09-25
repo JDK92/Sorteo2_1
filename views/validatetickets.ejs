@@ -17,8 +17,7 @@
     <nav class="black white-text">
         <div class="nav-wrapper">
             <div class="brand-logo left">
-                Hola
-                <%=nombreUsuario%>
+                Sorteo 60 Aniversario
             </div>
             <ul class="nav-mobile right">
                 <li>
@@ -35,73 +34,170 @@
         </div>
     </nav>
 
-    <main class="container">
-        <h1>Validación de facturas</h1>
-        <% if (tickets.length == 0)  {%>
-            <h2>
+    <main>
+        <div class="container">
+            <h1>Validación de facturas</h1>
+
+            <% if (tickets.length == 0)  {%>
+            <p class="flow-text">
                 No hay facturas por validar.
-            </h2>
+            </p>
             <% } else { %>
 
-                <% for (var i = 0; i < tickets.length; i++ ) { %>
-                    <div class="section">
-                        <div class="row">
-                            <h4>
-                                Factura #
-                                <%= i+1 %>
-                            </h4>
-                            <form method="post" action="validarFactura">
-                                <div class="input-field col s12 m6 l4">
-                                    <label for="sucursal">Sucursal</label>
-                                    <input type="text" name="sucursal" value="<%= tickets[i].sucursal %>" readonly>
-                                </div>
-                                <div class="input-field col s12 m6 l4 ">
-                                    <label for="nombre">Cliente</label>
-                                    <input type="text" name="nombre" value="<%= tickets[i].nombre %>" readonly>
-                                </div>
-                                <div class="input-field col s12 m6 l4 ">
-                                    <label for="email">Correo</label>
-                                    <input type="email" name="email" value="<%= tickets[i].email %>" readonly>
-                                </div>
-                                <div class="input-field col s6 m6 l2 ">
-                                    <label for="fecha">Fecha factura</label>
-                                    <input type="text" name="fecha" value="<%= tickets[i].fecha %>" readonly>
-                                </div>
-                                <div class="input-field col s6 m6 l2 ">
-                                    <label for="factura">Folio factura</label>
-                                    <input type="text" name="factura" value="<%= tickets[i].factura %>" readonly>
-                                </div>
-                                <div class="input-field col s6 m6 l2 ">
-                                    <label for="importe">Importe</label>
-                                    <input type="text" name="importe" value="<%= tickets[i].importe %>" readonly>
-                                </div>
-
-                                <div class="col s6 m6 l6">
-                                    <label for="accion">Acción</label>
-                                    <select class="browser-default" name="accion">
-                                        <option value="" disabled selected>Selecciona</option>
-                                        <option value="2">Aceptar factura</option>
-                                        <option value="0">Rechazar factura</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12">
-                                    <button type="submit" class="btn-small green darken-2" id="submit">Enviar</button>
-                                </div>
-                            </form>
+            <% for (var i = 0; i < tickets.length; i++ ) { %>
+            <div class="section">
+                <div class="row">
+                    <h4>
+                        Factura #
+                        <%= i+1 %>
+                    </h4>
+                    <form method="post" action="validarFactura">
+                        <div class="input-field col s12 m6 l4">
+                            <label for="sucursal">Sucursal</label>
+                            <input type="text" name="sucursal" value="<%= tickets[i].sucursal %>" readonly>
                         </div>
+                        <div class="input-field col s12 m6 l4 ">
+                            <label for="nombre">Cliente</label>
+                            <input type="text" name="nombre" value="<%= tickets[i].nombre %>" readonly>
+                        </div>
+                        <div class="input-field col s12 m6 l4 ">
+                            <label for="email">Correo</label>
+                            <input type="email" name="email" value="<%= tickets[i].email %>" readonly>
+                        </div>
+                        <div class="input-field col s6 m6 l2 ">
+                            <label for="fecha">Fecha factura</label>
+                            <input type="text" name="fecha" value="<%= tickets[i].fecha %>" readonly>
+                        </div>
+                        <div class="input-field col s6 m6 l2 ">
+                            <label for="factura">Folio factura</label>
+                            <input type="text" name="factura" value="<%= tickets[i].factura %>" readonly>
+                        </div>
+                        <div class="input-field col s6 m6 l2 ">
+                            <label for="importe">Importe</label>
+                            <input type="text" name="importe" value="<%= tickets[i].importe %>" readonly>
+                        </div>
+                        <div class="hiddendiv">
+                            <input type="text" name="idKeyx" value="<%= tickets[i].idKeyx %>" readonly>
+                        </div>
+
+                        <div class="col s6 m6 l6">
+                            <label for="accion">Acción</label>
+                            <select class="browser-default" name="accion" id="select<%= tickets[i].idKeyx %>">
+                                <option value="" disabled selected>Selecciona</option>
+                                <option value="2">Aceptar factura</option>
+                                <option value="0">Rechazar factura</option>
+                            </select>
+                        </div>
+                        <div class="col s12">
+                            <label for="observaciones">
+                                Motivo de rechazo
+                            </label>
+                            <textarea name="observaciones" maxlength="50" id="observaciones<%= tickets[i].idKeyx %>"
+                                placeholder="Motivo de rechazo" required disabled></textarea>
+                        </div>
+                        <div class="input-field col s12">
+                            <button type="submit" class="btn" id="btn<%= tickets[i].idKeyx %>" disabled>Esperando
+                                evento</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <% } %>
+            <% }%>
+
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header green darken-3 white-text"><i class="material-icons">check</i>Facturas
+                        aprobadas</div>
+                    <div class="collapsible-body">
+                        <span>
+                            <table class="responsive-table highlight">
+                                <thead>
+                                    <tr>
+                                        <th>Factura</th>
+                                        <th>Importe</th>
+                                        <th>Fecha</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let j = 0; j < facturas.length; j++) { %>
+                                    <% if (facturas[j].clave == 2 ) { %>
+                                    <tr>
+                                        <td>
+                                            <%= facturas[j].factura %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[j].importe %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[j].fecha %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[j].observacion %>
+                                        </td>
+
+                                    </tr>
+                                    <% } %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </span>
                     </div>
-                    <div class="divider"></div>
-                    <% } %>
+                </li>
+                <li>
+                    <div class="collapsible-header red darken-4 white-text"><i class="material-icons">close</i>Facturas
+                        rechazadas</div>
+                    <div class="collapsible-body">
+                        <span>
+                            <table class="responsive-table highlight">
+                                <thead>
+                                    <tr>
+                                        <th>Factura</th>
+                                        <th>Importe</th>
+                                        <th>Fecha</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (var k = 0; k < facturas.length; k++) { %>
+                                    <% if (facturas[k].clave == 0 ) { %>
+                                    <tr>
+                                        <td>
+                                            <%= facturas[k].factura %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[k].importe %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[k].fecha %>
+                                        </td>
+                                        <td>
+                                            <%= facturas[k].observacion %>
+                                        </td>
+
+                                    </tr>
+                                    <% } %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </span>
+                    </div>
+                </li>
+            </ul>
 
 
-                        <% }%>
+        </div>
     </main>
 
 
 
     <script src="/js/materialize.min.js "></script>
     <script src="/js/jquery.min.js"></script>
-    <script src="/js/script.js"></script>
+    <script src="/js/facturas.js"></script>
+    
+    <script src="/js/collapsible.js"></script>
 </body>
 
 </html>

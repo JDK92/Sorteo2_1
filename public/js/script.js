@@ -88,6 +88,7 @@ function habilitarRegistro() {
     }
 }
 
+/* UPLOAD TICKET */
 function validaDatos() {
     isValid = true;
     $('input').each(function () {
@@ -119,6 +120,8 @@ function capcha_expired() {
     habilitarSubmit();
 };
 
+
+/* SOPORTE */
 $("input[type='checkbox']").change(function () {
     var a = $("input[type='checkbox']");
     if (a.length == a.filter(":checked").length) {
