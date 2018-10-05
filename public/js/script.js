@@ -110,6 +110,8 @@ function habilitarSubmit() {
     }
 }
 
+
+
 function capcha_filled() {
     captchaFilled = true;
     habilitarSubmit();
@@ -119,6 +121,11 @@ function capcha_expired() {
     captchaFilled = false;
     habilitarSubmit();
 };
+
+$("#uploadTicket").submit(function() {
+    $("button#submit").attr("disabled", "true");
+    $("button#submit").html("Esperando respuesta");  
+})
 
 
 /* SOPORTE */
